@@ -19,42 +19,45 @@ function modal() {
             const modalId = this.dataset.open;
             document.getElementById(modalId).classList.add(isVisible);
         });
-        // cerrando modal en el boton
-        for (const el of closeEls) {
-            el.addEventListener("click", function () {
-                this.parentElement.parentElement.parentElement.classList.remove(isVisible);
-            });
-            // cerrando modal por fuera
-            document.addEventListener("click", e => {
-                if (e.target == document.querySelector(".modal.is-visible")) {
+    }
+    // cerrando modal en el boton
+    for (const el of closeEls) {
+        el.addEventListener("click", function (e) {
+            e.preventDefault();
+            this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(isVisible);
+        });
+        // cerrando modal por fuera
+        document.addEventListener("click", e => {
+            if (e.target == document.querySelector(".modal.is-visible")) {
+                document.querySelector(".modal.is-visible").classList.remove(isVisible);
+            }
+            //presionando escape
+            document.addEventListener("keyup", e => {
+                if (e.key == "Escape" && document.querySelector(".modal.is-visible")) {
                     document.querySelector(".modal.is-visible").classList.remove(isVisible);
                 }
-                //presionando escape
-                document.addEventListener("keyup", e => {
-                    if (e.key == "Escape" && document.querySelector(".modal.is-visible")) {
-                        document.querySelector(".modal.is-visible").classList.remove(isVisible);
-                    }
-                });
             });
-        }
+        });
     }
 }
-function eliminar(e) {
+function eliminar(e){
+    e.preventDefault();
     if (e.target.classList.contains('btn-delete')) {
         e.target.parentElement.parentElement.remove();
-
-        let id = e.target.parentElement.parentElement.dataset.id;
-        let data = new FormData();
-        data.append('id', id);
-
-        fetch('/eliminar.php', {
-            method: 'GET',
-            body: data
+        let id = e.target.dataset.id;
+        let data = {
+            id
+        };
+        console.log(data);
+        fetch(`/entityclassPL.php?urloper=find&pn=0&id=${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(data),
+            header: new Headers()
         })
-            .then((respuesta) => respuesta.json())
-            .then((datos) => {
-                if (datos === 'eliminado') {
-                    alerta.innerHTML =
+            .then((res) => res.text())
+            .then((data) => {
+                if (data === 'eliminado') {
+                    document.innerHTML =
                         `
                 <div class="alert alert-success" role="alert">
                 Registro Eliminado!

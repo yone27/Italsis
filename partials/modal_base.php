@@ -4,7 +4,7 @@
             <form action="">
                 <header class="modal-header">
                     <h4 class="modal-title">Agregar Registro</h4>
-                    <button class="close-modal" aria-label="close modal" data-close>✕</button>
+                    <button class="close-modal" type="submit" aria-label="close modal" data-close>✕</button>
                 </header>
                 <section class="modal-body">
                     <div class="form-group">
