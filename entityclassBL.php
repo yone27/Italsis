@@ -12,14 +12,23 @@
  *
  */
 chdir(dirname(__FILE__));
+
 include_once("../base/baseBL.php");
-chdir(dirname(__FILE__));
-include_once("../../../includes/utilities.php");
+
 class entityclassBL extends baseBL
 {
-
+      // entityclass
       protected $observation;
       protected $generator;
+
+      // entitysubclass
+      protected $tableSub;
+      protected $codeSub;
+      protected $nameSub;
+      protected $identityclass;
+      protected $observationSub;
+      protected $activeSub;
+      protected $deletedSub;
 
 
       function __construct(
@@ -28,13 +37,28 @@ class entityclassBL extends baseBL
             $observation,
             $generator,
             $active,
-            $deleted
+            $deleted,
+            $codeSub,
+            $nameSub,
+            $identityclass,
+            $observationSub,
+            $activeSub,
+            $deletedSub
       ) {
 
             $scheme = "base";
             $table = "entityclass";
             $this->observation  = $observation;
             $this->generator  = $generator;
+
+            // entitysubclass
+            $this->tableSub = "entitysubclass";;
+            $this->codeSub = $codeSub;
+            $this->nameSub = $nameSub;
+            $this->identityclass = $identityclass;
+            $this->observationSub  = $observationSub;
+            $this->activeSub = $activeSub;
+            $this->deletedSub = $deletedSub;
 
             parent::__construct($scheme, $table, $code, $name, $active, $deleted);
       }
@@ -43,7 +67,6 @@ class entityclassBL extends baseBL
       {
             $valid = true;
             $msg = "";
-
 
             if (!utilities::valOk($this->code)) {
                   $valid = false;
@@ -72,6 +95,7 @@ class entityclassBL extends baseBL
       }
 
       function buildArray(&$A)
+      // Entityclass
       {
             $A[] = utilities::buildS($this->code);
             $A[] = utilities::buildS($this->name);
@@ -79,50 +103,35 @@ class entityclassBL extends baseBL
             $A[] = utilities::buildS($this->generator);
             $A[] = utilities::buildS($this->active);
             $A[] = utilities::buildS($this->deleted);
-      }
-
-      function execute($urloper, &$parAr, $name = "")
-      {
-
-            if ($urloper == "update") {
-                  $nerr = $this->update($parAr);
-                  if ($nerr === true)
-                        $msg = "Operacion de Actualizacion OK. ";
-                  else
-                        $msg = "Operacion de Actualizacion Fallo. ";
-
-                  header("Location:departamentos.php");
-                  utilities::alert($msg);
-            } // update
-
-            if ($urloper == "insert") {
-                  $nerr = $this->insert($parAr);
-                  if ($nerr === true)
-                        $msg = "Operacion de Registro OK. ";
-                  else
-                        $msg = "Operacion de Registro Fallo. ";
-
-                  header("Location:departamentos.php");
-                  utilities::alert($msg);
-            } // update
-
-            if ($urloper == "find") {
-                  $nerr = $this->select($parAr);
-            }
-            if ($urloper == "findByName") {
-                  $nerr = $this->selectByName($parAr, $name);
-            }
-            if ($urloper == "update" || $urloper == "insert" || $urloper == "find" || $urloper == "findByName") {
-                  header("Location:departamentos.php");
-            }
+            // Entitysubclass
+            $A[] = utilities::buildS($this->codeSub);
+            $A[] = utilities::buildS($this->nameSub);
+            $A[] = utilities::buildS($this->observationSub);
+            $A[] = utilities::buildS($this->identityclass);
+            $A[] = utilities::buildS($this->activeSub);
+            $A[] = utilities::buildS($this->deletedSub);
       }
 
       function fillGrid($pn = 0, $parname = "", $parvalue = "")
       {
             $par = "";
             $par = "";
-            $arrCol = array("id", "code", "name", "observation", "generator", "
-active", "deleted");
+            $arrCol = array("id", "code", "name", "observation", "generator", "active", "deleted");
             return parent::fillGrid($arrCol, $par, $pn, $pageSize = 10);
+      }
+
+      function execute($urloper, &$parAr, $name = "")
+      {
+            if ($urloper == "insert") {
+                  var_dump($parAr);
+                  die();
+                  $nerr = $this->insert($parAr);
+                  if ($nerr === true)
+                        $msg = "Insert Operation OK. ";
+                  else
+                        $msg = "Insert Operation Failed. ";
+                  utilities::alert($msg);
+            }
+            parent::execute($urloper, $parAr, $name = "");
       }
 }
