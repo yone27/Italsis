@@ -1,4 +1,7 @@
-import Alert from './modules/Alert.js';
+//import Alert from './modules/Alert.js';
+import { initPagination } from './modules/Pagination.js';
+import initModal from './modules/Modal.js';
+
 document.addEventListener('DOMContentLoaded', function () {
     const selectDept = document.getElementById('identitysubclass')
     const idpartylocation1 = document.getElementById('idpartylocation1')
@@ -13,88 +16,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const showAlert = document.getElementById('showAlert')
     const URI = 'actionAssistantBank.php'
 
-    // Pagination
-    let pageSize = 5
-    let pageNumber = 1
-    let globalData = []
-    let noticias = []
-    let noticiasHtml = ''
-
-    function paginate(array, page_size, page_number) {
-        return array.slice((page_number - 1) * page_size, page_number * page_size)
-    }
-
-    function nextPage() {
-        pageNumber++
-        showNoticias(noticias)
-    }
-    function previusPage() {
-        pageNumber--
-        showNoticias(noticias)
-    }
-
-    function showNoticias(_noticias) {
-        if (_noticias.length >= 0) {
-            let pagination = paginate(noticias, pageSize, pageNumber)
-            noticiasHtml = ''
-            pagination.forEach(element => {
-                noticiasHtml += '<tr>'
-                noticiasHtml += '<td>' + element.id + '</td>'
-                noticiasHtml += '<td>' + element.code + '</td>'
-                noticiasHtml += '<td>' + element.name + '</td>'
-                noticiasHtml += '<td>' + element.dateregister + '</td>'
-                noticiasHtml += '<td>' + element.companyname + '</td>'
-                noticiasHtml += '<td>' + element.dept + '</td>'
-                noticiasHtml += `<td><button id="${element.id}" class="btn btn-info btn-sm rounded-pill editLink" aria-label="open modal" type="button" data-open="assistantBankModalEdit">Edit</button> <button type="button" id="${element.id}" class="btn btn-danger btn-sm rounded-pill deleteLink">Delete<button></td>`
-                noticiasHtml += '</tr>'
-            })
-
-            // Pagination footer construction
-            const tableButtons = document.querySelector('#table-pagination-footer .buttons-pagination')
-            const tableInfo = document.querySelector('#table-pagination-footer .info')
-            let paginationButtons = ''
-            let paginationInfo = ''
-            let pageCont = Math.ceil(noticias.length / pageSize)
-            // Posicion inicial de los registros con respecto a globalData
-            let dataInitialPosition = globalData.findIndex((value) => value.id == pagination[0].id) + 1
-
-            // Posicion Final de los registro con respecto a globalData
-            let dataFinalPosition = globalData.findIndex((value) => value.id == pagination[pagination.length - 1].id) + 1
-
-            paginationInfo = `Mostrando del ${dataInitialPosition} al ${dataFinalPosition} de ${globalData.length} registros`
-            paginationButtons += pageNumber > 1 ? " <button type='button' class='btn btn-pagination' id='prevPage'>Anterior</button>" : ""
-            paginationButtons += pageNumber < pageCont ? ("<button type='button' class='btn btn-pagination' id='nextPage'>Siguiente</button>") : ""
-            tableButtons.innerHTML = paginationButtons
-            tableInfo.innerHTML = paginationInfo
-
-            let nextPageBtn = document.getElementById('nextPage')
-            let prevPageBtn = document.getElementById('prevPage')
-
-            if (nextPageBtn) {
-                nextPageBtn.addEventListener('click', nextPage)
-            }
-            if (prevPageBtn) {
-                prevPageBtn.addEventListener('click', previusPage)
-            }
-
-            tbody.innerHTML = ""
-            tbody.innerHTML = noticiasHtml
-        } else {
-            tbody.innerHTML = _noticias.nodata
-        }
-
-    }
-
     // Search all data
     const fetchAllData = async () => {
         const data = await fetch(`${URI}?fetchAll=1`, {
             method: 'GET'
         })
         const res = await data.json()
-        noticias = res
-        globalData = res
-        showNoticias(noticias)
-        modal()
+        initPagination(res, '#table-assistantBank')
+        initModal()
     }
     fetchAllData()
 
@@ -107,9 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'GET'
             })
             const res = await data.json()
-            noticias = res
-            globalData = res
-            showNoticias(noticias)
+            initPagination(res, '#table-assistantBank')
         } else {
             fetchAllData()
         }
@@ -125,9 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
 
             const res = await data.json()
-            noticias = res
-            globalData = res
-            showNoticias(noticias)
+            initPagination(res, '#table-assistantBank')
         } else {
             fetchAllData()
         }
@@ -156,20 +81,30 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'GET'
             })
             const res = await data.json()
-            let customObj
+            let output = ""
             if (selected) {
+                let customObj
                 // selecciona por defecto la compañia
                 customObj = res.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
+
+                customObj.forEach(element => {
+                    if (element.selected) {
+                        output += '<option selected value=' + element.id + '>' + element.name + '</option>'
+                    } else {
+                        output += '<option value=' + element.id + '>' + element.name + '</option>'
+                    }
+                })
+            } else {
+                res.forEach(element => {
+                    //console.log(element);
+                    if (element.selected) {
+                        output += '<option selected value=' + element.id + '>' + element.name + '</option>'
+                    } else {
+                        output += '<option value=' + element.id + '>' + element.name + '</option>'
+                    }
+                })
             }
-            
-            let output = ""
-            customObj.forEach(element => {
-                if (element.selected) {
-                    output += '<option selected value=' + element.id + '>' + element.name + '</option>'
-                } else {
-                    output += '<option value=' + element.id + '>' + element.name + '</option>'
-                }
-            })
+
 
             dest.classList.remove('hide')
             dest.innerHTML = output
@@ -272,38 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
         showAlert.innerHTML = res
     }
 
-    modal()
-    function modal() {
-        // Codigo del Modal
-        const openEls = document.querySelectorAll("[data-open]")
-        const closeEls = document.querySelectorAll("[data-close]")
-        const isVisible = "is-visible"
-        // abrir modales
-        for (const el of openEls) {
-            el.addEventListener("click", function () {
-                const modalId = this.dataset.open
-                document.getElementById(modalId).classList.add(isVisible)
-            })
-        }
-        // cerrando modal en el boton
-        for (const el of closeEls) {
-            el.addEventListener("click", function (e) {
-                e.preventDefault()
-                this.parentElement.parentElement.parentElement.parentElement.parentElement.classList.remove(isVisible)
-            })
-            // cerrando modal por fuera
-            document.addEventListener("click", e => {
-                if (e.target == document.querySelector(".modal.is-visible")) {
-                    document.querySelector(".modal.is-visible").classList.remove(isVisible)
-                }
-                //presionando escape
-                document.addEventListener("keyup", e => {
-                    if (e.key == "Escape" && document.querySelector(".modal.is-visible")) {
-                        document.querySelector(".modal.is-visible").classList.remove(isVisible)
-                    }
-                })
-            })
-        }
-    }
+    // Inicializamos todos los modales
+    initModal()
 })
-

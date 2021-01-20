@@ -7,10 +7,23 @@
 .info {
     color: #505050;
 }
+
 .buttons-pagination :not(:last-child) {
     margin-right: 10px;
 }
+
 .buttons-pagination button {
     background: #f9f9f9;
     border: 1px solid #ddd;
+}
+
+.filter-company-container {
+    margin-bottom: 10px;
+}
+.filter-company-container label:first-child, .filter-company-container input {
+    margin-bottom: 0 !important;
+}
+.filter-company-container select  {
+    margin-top: 0 !important;
+
 }

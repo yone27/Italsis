@@ -139,7 +139,7 @@ $sbl->buildArray($arPar);
         <?php include './modals/modal_assistantBank.php'; ?>
         <?php include './modals/modal_assistantBankEdit.php'; ?>
     </main>
-    <script type="module" src="assets/js/mainAssistantBank.js"></script>
+    <script type="module" src="assets/js/assistantBank.js"></script>
     <!-- <script type="module" src="./js/app.js"></script> -->
 </body>
 

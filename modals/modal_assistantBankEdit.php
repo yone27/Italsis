@@ -14,12 +14,14 @@
                     presentationLayer::buildInput("code", "code", "editCode", $code, "50");
                     presentationLayer::buildInput("name", "name", "editName", $name, "50");
                     ?>
-                    <label>
-                        <span>Nombre compañia :</span>
-                        <input style="text-transform: uppercase;" autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation2" placeholder="Nombre compañia">
-                    </label>
-                    <select style="text-transform: uppercase;"  name="infocompany" class="menu-company hide" id="infocompany2" multiple="multiple">
-                    </select>
+                    <div class="filter-company-container">
+                        <label>
+                            <span>Nombre compañia :</span>
+                            <input style="text-transform: uppercase;" autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation2" placeholder="Nombre compañia">
+                        </label>
+                        <select style="text-transform: uppercase;" name="infocompany" class="menu-company hide" id="infocompany2" multiple="multiple">
+                        </select>
+                    </div>
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
                     presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'editidentitysubclass', $sbl, $com, "id", "name", $identitysubclass);

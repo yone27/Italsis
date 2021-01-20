@@ -13,12 +13,14 @@
                     presentationLayer::buildInput("code", "scode", "scode", $code, "50");
                     presentationLayer::buildInput("name", "sname", "sname", $name, "50");
                     ?>
-                    <label>
-                        <span>Nombre compañia :</span>
-                        <input autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation1" placeholder="Nombre compañia">
-                    </label>
-                    <select name="infocompany" class="menu-company hide" id="infocompany1" multiple="multiple">
-                    </select>
+                    <div class="filter-company-container">
+                        <label>
+                            <span>Nombre compañia :</span>
+                            <input autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation1" placeholder="Nombre compañia">
+                        </label>
+                        <select name="infocompany" class="menu-company hide" id="infocompany1" multiple="multiple">
+                        </select>
+                    </div>
                     <?php
 
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
