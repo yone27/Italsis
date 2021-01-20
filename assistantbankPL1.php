@@ -37,12 +37,11 @@ basePL::buildccs();
 <html>
 
 <head>
+
     <title>assistantbankPL.PHP</title>
+
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="css/modal.css">
-    <link rel="stylesheet" href="css/pagination.css">
-    <link rel="stylesheet" href="css/inputs.css">
-    <link rel="stylesheet" href="css/custom.css">
+
 </head>
 
 
@@ -118,6 +117,13 @@ $bpl = new basePL(
     $fbnLink
 );
 
+/*if(isset($_GET["urloper"])){
+        if ($_GET["urloper"] == "clear"){
+            $id = $code = $name = "";
+            $idclass = "{valor}";
+        }
+    }*/
+
 $oper = $urloper;
 if ($urloper == "save" && $id == "") {
     $oper = "insert";
@@ -130,10 +136,18 @@ if ($id != "") {
     $arPar[] = $id;
 }
 
+if (isset($_GET["V"])) {
+    if ($_GET["V"] == "Y") {
+        utilities::alert($msgversion);
+    }
+}
+
 $sbl->buildArray($arPar);
+
 $sbl->execute($oper, $arPar);
 
-if ($oper == "find" || $oper == "findByName" || $oper == "findByDept") {
+if ($oper == "find" || $oper == "findByName") {
+
     $id = $arPar[0];
     $code = $arPar[1];
     $name = $arPar[2];
@@ -151,64 +165,61 @@ if ($oper == "find" || $oper == "findByName" || $oper == "findByDept") {
 <!-- 
 <body oncontextmenu="return false;">
 -->
+<style>
+    .italsis table {
+        max-width: none;
+    }
+</style>
 
 <body>
-    <FORM action="<?php echo $action; ?>" method="post" name="assistantbankPL1" id="assistantbankPL1" class="italsis">
-        <h1 style="
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-">assistantbankBL
-            <button class="btn btn-success" aria-label="open modal" type="button" data-open="assistantBankModal">Agregar nuevo registro</button>
-        </h1>
-        <div id="showAlert"></div>
-        <div class="grid grid-2">
-            <?php
-            presentationLayer::buildInput("Nombre compañia", "idpartylocation", "idpartylocation", $idpartylocation, "50");
-            $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-            presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'identitysubclass', $sbl, $com, "id", "name", $identitysubclass);
-            ?>
-        </div>
-        <div class="table-custom">
-            <div id="table-pagination-header">
-                <div class="pageSize-container">
-                    <!-- <label for="pageSize">Mostrar</label>
-                    <select id="pageSize">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> -->
-                </div>
-            </div>
-            <table id="table-assistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Codigo</th>
-                        <th>Cuenta</th>
-                        <th>Fecha</th>
-                        <th>Nombre Comp</th>
-                        <th>Dept</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
-            <div id="table-pagination-footer">
-                <div class="info">
+    <FORM action="<?php echo $action; ?>" method="post" name="assistantbankPL" class="italsis">
 
-                </div>
-                <div class="buttons-pagination">
+        <?php
 
-                </div>
-            </div>
-        </div>
+        presentationLayer::buildFormTitle("Tabla maestra Assistant Bank");
+
+        presentationLayer::buildInitColumn();
+
+        presentationLayer::buildIdInput($id, "document.assistantbankPL", $fLink);
+
+        presentationLayer::buildInput("code", "code", "code", $code, "50");
+
+        presentationLayer::buildInput("name", "name", "name", $name, "50");
+        //presentationLayer::buildInput("idpartybankinfo", "idpartybankinfo", "idpartybankinfo", $idpartybankinfo, "50");
+
+        presentationLayer::buildSelect("idpartybankinfo","idpartybankinfo","idpartybankinfo",$sbl,"partybankinfo",$idpartybankinfo,"party","");
+
+        presentationLayer::buildSelect("idaccassistant","idaccassistant","idaccassistant",$sbl,"accountassistant",$idaccassistant,"libertyweb","");
+        presentationLayer::buildInput("Cedula partyUser", "idpartyuser", "idpartyuser", $idpartyuser, "50");
+
+        //presentationLayer::buildSelect("idpartyuser","idpartyuser","idpartyuser",$sbl,"party",$idpartyuser,"party","");
+
+        presentationLayer::buildInput("dateregister", "dateregister", "dateregister", $dateregister, "50");
+
+        presentationLayer::buildInput("Cedula location", "idpartylocation", "idpartylocation", $idpartylocation, "50");
+
+        //presentationLayer::buildSelect("idpartylocation","idpartylocation","idpartylocation",$sbl,"party",$idpartylocation,"party","");
+
+        presentationLayer::buildSelect("identitysubclass", "identitysubclass", "identitysubclass", $sbl, "entitysubclass", $identitysubclass, "base", "");
+        
+        $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
+        presentationLayer::buildSelectWithComEvent('prueba', 'prueba', 'prueba', $sbl, $com, "id", "name",$prueba, '');
+
+        //presentationLayer::buildSelect("identityclass", "identityclass", "identityclass", $sbl, "entityclass", $identityclass, "base", "");
+
+        presentationLayer::buildEndColumn();
+        presentationLayer::buildInitColumn();
+
+        presentationLayer::buildCheck("active", "active", "active", $active);
+        presentationLayer::buildCheck("deleted", "deleted", "deleted", $deleted);
+
+        presentationLayer::buildEndColumn();
+
+        //presentationLayer::buildFooter($bpl,$sbl,$pn);
+        presentationLayer::buildFooterNoGrid($bpl, $sbl, $pn, "Y", "Y", "Y", "Y", "Y");
+        $sbl->fillGridDisplayPaginator('');
+        ?>
     </form>
-    <?php include 'modal_assistantBank.php'; ?>
-    <?php include 'modal_assistantBankEdit.php'; ?>
-    <script src="./js/mainAssistantBank.js"></script>
-    <!-- <script type="module" src="./js/app.js"></script> -->
 </body>
 
 </html>

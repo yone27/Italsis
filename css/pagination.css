@@ -1,0 +1,16 @@
+#table-pagination-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.info {
+    color: #505050;
+}
+.buttons-pagination :not(:last-child) {
+    margin-right: 10px;
+}
+.buttons-pagination button {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+}
