@@ -31,7 +31,6 @@ basePL::buildccs();
 
 //Utilitario para desplegar menu de funciones
 //utilities::trueUser();
-
 ?>
 
 <html>
@@ -39,35 +38,23 @@ basePL::buildccs();
 <head>
     <title>assistantbankPL.PHP</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="css/modal.css">
-    <link rel="stylesheet" href="css/pagination.css">
-    <link rel="stylesheet" href="css/inputs.css">
-    <link rel="stylesheet" href="css/custom.css">
+    <!-- Fontawesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+
+    <!-- Custom css -->
+    <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/pagination.css">
+    <link rel="stylesheet" href="assets/css/inputs.css">
+    <link rel="stylesheet" href="assets/css/alerts.css">
+    <link rel="stylesheet" href="assets/css/custom.css">
 </head>
 
 
 <?php
-//links
-$sLink = $dLink = $pLink = $cLink = $flink = $fbnlink = "";
-
-//actions
-$action = "";
-$urloper = "";
-
-//For pagination
-$pn = 0;
-
-$urloper = basePL::getReq($_REQUEST, "urloper");
-$pn = basePL::getReq($_REQUEST, "pn");
-$parS = "";
-
 // default
 $active = "Y";
 $deleted = "N";
-$id = $code = $name = "";
-
-$idpartybankinfo = $idaccassistant = $idpartyuser = $dateregister = $idpartylocation = "";
-$identitysubclass = "";
+$id = $code = $name = $idpartybankinfo = $idaccassistant = $idpartyuser = $dateregister = $idpartylocation = $identitysubclass = "";
 
 
 $id = basePL::getReq($_REQUEST, "id");
@@ -95,90 +82,35 @@ $sbl = new assistantbankBL(
     $identitysubclass
 );
 
-
-$sbl->buildLinks(
-    "assistantbankPL.php",
-    $pn,
-    $sLink,
-    $dLink,
-    $pLink,
-    $cLink,
-    $fLink,
-    $fbnLink,
-    $action,
-    $parS
-);
-$bpl = new basePL(
-    "document.assistantbankPL",
-    $sLink,
-    $dLink,
-    $pLink,
-    $cLink,
-    $fLink,
-    $fbnLink
-);
-
-$oper = $urloper;
-if ($urloper == "save" && $id == "") {
-    $oper = "insert";
-}
-if ($urloper == "save" && $id != "") {
-    $oper = "update";
-}
-
-if ($id != "") {
-    $arPar[] = $id;
-}
-
 $sbl->buildArray($arPar);
-$sbl->execute($oper, $arPar);
-
-if ($oper == "find" || $oper == "findByName" || $oper == "findByDept") {
-    $id = $arPar[0];
-    $code = $arPar[1];
-    $name = $arPar[2];
-    $idpartybankinfo = $arPar[3];
-    $idaccassistant = $arPar[4];
-    $idpartyuser = $arPar[5];
-    $dateregister = $arPar[6];
-    $active = $arPar[7];
-    $deleted = $arPar[8];
-    $idpartylocation = $arPar[9];
-    $identitysubclass = $arPar[10];
-}
 
 ?>
-<!-- 
-<body oncontextmenu="return false;">
--->
 
-<body>
-    <FORM action="<?php echo $action; ?>" method="post" name="assistantbankPL1" id="assistantbankPL1" class="italsis">
-        <h1 style="
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-">assistantbankBL
+<body class="container-custom">
+    <main class="italsis">
+        <h1 class="title title-a">assistantbankBL
             <button class="btn btn-success" aria-label="open modal" type="button" data-open="assistantBankModal">Agregar nuevo registro</button>
         </h1>
         <div id="showAlert"></div>
-        <div class="grid grid-2">
-            <?php
-            presentationLayer::buildInput("Nombre compañia", "idpartylocation", "idpartylocation", $idpartylocation, "50");
-            $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-            presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'identitysubclass', $sbl, $com, "id", "name", $identitysubclass);
-            ?>
-        </div>
+        <form method="post" name="assistantbankPL1" id="assistantbankPL1">
+            <div class="grid grid-2">
+                <?php
+                presentationLayer::buildInput("Nombre compañia", "idpartylocation", "idpartylocation", $idpartylocation, "50");
+                $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
+                presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'identitysubclass', $sbl, $com, "id", "name", $identitysubclass);
+                ?>
+            </div>
+        </form>
         <div class="table-custom">
             <div id="table-pagination-header">
                 <div class="pageSize-container">
                     <!-- <label for="pageSize">Mostrar</label>
-                    <select id="pageSize">
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select> -->
+                <select id="pageSize">
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select> -->
                 </div>
             </div>
             <table id="table-assistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
@@ -204,10 +136,10 @@ if ($oper == "find" || $oper == "findByName" || $oper == "findByDept") {
                 </div>
             </div>
         </div>
-    </form>
-    <?php include 'modal_assistantBank.php'; ?>
-    <?php include 'modal_assistantBankEdit.php'; ?>
-    <script src="./js/mainAssistantBank.js"></script>
+        <?php include './modals/modal_assistantBank.php'; ?>
+        <?php include './modals/modal_assistantBankEdit.php'; ?>
+    </main>
+    <script type="module" src="assets/js/mainAssistantBank.js"></script>
     <!-- <script type="module" src="./js/app.js"></script> -->
 </body>
 

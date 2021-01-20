@@ -1,0 +1,118 @@
+.alert-custom {
+    max-width: 50%;
+    border: none;
+    border-left: 10px solid;
+    display: flex;
+    border-radius: 5px 0 0 5px;
+    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);
+    align-items: center;
+    position: fixed;
+}
+
+.alert-custom .icon {
+    font-size: 1.5em;
+}
+
+.alert-custom__icon {
+    padding-right: 10px;
+}
+
+.alert-custom__close {
+    margin-left: auto;
+    padding-left: 10px;
+}
+
+.alert-custom__content>p {
+    margin: 0;
+    font-size: 1.3em;
+}
+
+.alert-custom .icon, .alert-custom .alert-custom__content {
+    color: #bababa;
+}
+
+/* Alert default */
+
+.alert-custom--default {
+    background: #ededed;
+    border-left-color: #bababa;
+}
+
+.alert-custom--default .icon, .alert-custom--default .alert-custom__content {
+    color: #bababa;
+}
+
+/* Alert success */
+.alert-custom--success {
+    background: #c3f3d7;
+    border-left-color: #2fd573;
+}
+
+.alert-custom--success .icon, .alert-custom--success .alert-custom__content {
+    color: #2fd573;
+}
+
+/* Alert info */
+.alert-custom--info {
+    background: #d7f0ff;
+    border-left-color: #71c9ff;
+}
+
+.alert-custom--info .icon, .alert-custom--info .alert-custom__content {
+    color: #71c9ff;
+}
+
+/* Alert danger */
+.alert-custom--danger {
+    background: #ffe0e3;
+    border-left-color: #ff4858;
+}
+
+.alert-custom--danger .icon, .alert-custom--danger .alert-custom__content {
+    color: #ff4858;
+}
+
+/* Alert warning */
+.alert-custom--warning {
+    background: #ffdb9b;
+    border-left-color: #ffa503;
+}
+
+.alert-custom--warning .icon, .alert-custom--warning .alert-custom__content {
+    color: #ffa503;
+}
+
+/* Alert dark */
+.alert-custom--dark {
+    background: #4e4e4e;
+    border-left-color: #343434;
+}
+
+/* Animations */
+.alert-slideInLeft {
+    animation-name: slideInLeft;
+    animation-duration: 1s;
+}
+
+@keyframes slideInLeft {
+    from {
+        margin-left: -100%;
+    }
+    to {
+        margin-left: 0%;
+    }
+}
+
+.alert-slideInRight {
+    animation-name: slideInRight;
+    animation-duration: 1s;
+}
+
+@keyframes slideInRight {
+    from {
+        margin-left: 100%;
+    }
+    to {
+        margin-right: 0%;
+    }
+}

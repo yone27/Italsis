@@ -1,3 +1,4 @@
+import Alert from './modules/Alert.js';
 document.addEventListener('DOMContentLoaded', function () {
     const selectDept = document.getElementById('identitysubclass')
     const idpartylocation1 = document.getElementById('idpartylocation1')
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const updateForm = document.getElementById('edit-assistantBank-form')
     const updateUserBtn = document.getElementById('btn-edit-data')
     const showAlert = document.getElementById('showAlert')
-    const URI = 'actionAB.php'
+    const URI = 'actionAssistantBank.php'
 
     // Pagination
     let pageSize = 5
