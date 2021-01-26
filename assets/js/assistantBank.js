@@ -1,5 +1,5 @@
 //import Alert from './modules/Alert.js';
-import { initPagination } from './modules/Pagination.js';
+import { initPagination, showPagination } from './modules/Pagination.js';
 import initModal from './modules/Modal.js';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -16,13 +16,15 @@ document.addEventListener('DOMContentLoaded', function () {
     const showAlert = document.getElementById('showAlert')
     const URI = 'actionAssistantBank.php'
 
+    initPagination('#table-assistantBank')
+
     // Search all data
     const fetchAllData = async () => {
         const data = await fetch(`${URI}?fetchAll=1`, {
             method: 'GET'
         })
         const res = await data.json()
-        initPagination(res, '#table-assistantBank')
+        showPagination(res)
         initModal()
     }
     fetchAllData()
@@ -36,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'GET'
             })
             const res = await data.json()
-            initPagination(res, '#table-assistantBank')
+            showPagination(res)
         } else {
             fetchAllData()
         }
@@ -52,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
 
             const res = await data.json()
-            initPagination(res, '#table-assistantBank')
+            showPagination(res)
         } else {
             fetchAllData()
         }
@@ -61,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Add new record
     formAssistantbankPL.addEventListener('submit', async e => {
         e.preventDefault()
+        // Validar que todos los campos esten llenos
         const formData = new FormData(formAssistantbankPL)
         formData.append('add', 1)
         const data = await fetch(URI, {
@@ -68,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body: formData
         })
         const res = await data.text()
+        
         showAlert.innerHTML = res
         fetchAllData()
         document.getElementById('modal2').click()
@@ -75,6 +79,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function filterCompanyInput(src, dest, selected) {
         const srcValue = src.value
+        // limpiando errores
+        let errors = document.querySelector('.error-message')
+        if (errors) {
+            errors.remove()
+        }
 
         if (srcValue.length > 3) {
             const data = await fetch(`${URI}?fetchCompany=${srcValue}`, {
@@ -84,30 +93,52 @@ document.addEventListener('DOMContentLoaded', function () {
             let output = ""
             if (selected) {
                 let customObj
+
                 // selecciona por defecto la compañia
-                customObj = res.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
+                if (!res.error) {
+                    customObj = res.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
 
-                customObj.forEach(element => {
-                    if (element.selected) {
-                        output += '<option selected value=' + element.id + '>' + element.name + '</option>'
-                    } else {
-                        output += '<option value=' + element.id + '>' + element.name + '</option>'
-                    }
-                })
+                    customObj.forEach(element => {
+                        if (element.selected) {
+                            output += `<option selected value="${element.id}">${element.name} </option>`
+                        } else {
+                            output += `<option value="${element.id}">${element.name} </option>`
+                        }
+                    })
+
+                    dest.classList.remove('hide')
+                    dest.innerHTML = output
+                } else {
+                    const nodeError = document.createElement("p");
+                    const textnode = document.createTextNode(`* ${res.error}`);
+                    nodeError.classList.add('error-message')
+                    nodeError.appendChild(textnode)
+
+                    dest.closest('.filter-company-container').appendChild(nodeError)
+                    dest.classList.add('hide')
+
+                }
             } else {
-                res.forEach(element => {
-                    //console.log(element);
-                    if (element.selected) {
-                        output += '<option selected value=' + element.id + '>' + element.name + '</option>'
-                    } else {
-                        output += '<option value=' + element.id + '>' + element.name + '</option>'
-                    }
-                })
+                if (!res.error) {
+                    res.forEach(element => {
+                        if (element.selected) {
+                            output += `<option selected value="${element.id}">${element.name} </option>`
+                        } else {
+                            output += `<option value="${element.id}">${element.name} </option>`
+                        }
+                    })
+                    dest.classList.remove('hide')
+                    dest.innerHTML = output
+                } else {
+                    const nodeError = document.createElement("p");
+                    const textnode = document.createTextNode(`* ${res.error}`);
+                    nodeError.classList.add('error-message')
+                    nodeError.appendChild(textnode)
+
+                    dest.closest('.filter-company-container').appendChild(nodeError)
+                    dest.classList.add('hide')
+                }
             }
-
-
-            dest.classList.remove('hide')
-            dest.innerHTML = output
         } else {
             dest.classList.add('hide')
             dest.innerHTML = ""
@@ -190,22 +221,24 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // delete data fetch request
-    tbody.addEventListener('click', e => {
+    tbody.addEventListener('click', async e => {
         if (e.target && e.target.matches('button.deleteLink')) {
             e.preventDefault()
-            let id = e.target.id
-            deleteData(id)
-            fetchAllData()
+            // Comprobamos que realmente quiere eliminar el registro
+            //probando la función, creando una alerta
+            if (confirm("¿Seguro que quieres borrar?")) {
+                // Eliminamos el registro
+                let id = e.target.id
+                const data = await fetch(`${URI}?delete=1&id=${id}`, {
+                    method: 'GET'
+                })
+                const res = await data.text()
+                // Mostramos alerta y nuevo fetch
+                showAlert.innerHTML = res
+                fetchAllData()
+            }
         }
     })
-
-    const deleteData = async (id) => {
-        const data = await fetch(`${URI}?delete=1&id=${id}`, {
-            method: 'GET'
-        })
-        const res = await data.text()
-        showAlert.innerHTML = res
-    }
 
     // Inicializamos todos los modales
     initModal()

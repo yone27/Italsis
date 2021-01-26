@@ -7,6 +7,8 @@
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);
     align-items: center;
     position: fixed;
+    top: 80%;
+    left: 2%;
 }
 
 .alert-custom .icon {
@@ -43,6 +45,7 @@
 }
 
 /* Alert success */
+
 .alert-custom--success {
     background: #c3f3d7;
     border-left-color: #2fd573;
@@ -53,6 +56,7 @@
 }
 
 /* Alert info */
+
 .alert-custom--info {
     background: #d7f0ff;
     border-left-color: #71c9ff;
@@ -63,6 +67,7 @@
 }
 
 /* Alert danger */
+
 .alert-custom--danger {
     background: #ffe0e3;
     border-left-color: #ff4858;
@@ -73,6 +78,7 @@
 }
 
 /* Alert warning */
+
 .alert-custom--warning {
     background: #ffdb9b;
     border-left-color: #ffa503;
@@ -83,12 +89,14 @@
 }
 
 /* Alert dark */
+
 .alert-custom--dark {
     background: #4e4e4e;
     border-left-color: #343434;
 }
 
 /* Animations */
+
 .alert-slideInLeft {
     animation-name: slideInLeft;
     animation-duration: 1s;
@@ -115,4 +123,9 @@
     to {
         margin-right: 0%;
     }
+}
+
+.error-message {
+    color: red;
+    margin-top: 10px;   
 }

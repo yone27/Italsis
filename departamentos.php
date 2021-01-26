@@ -16,6 +16,7 @@ basePL::buildccs();
     <title>Tabla maestra</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="assets/css/modal.css">
+    <link rel="stylesheet" href="assets/css/alerts.css">
     <link rel="stylesheet" href="assets/css/pagination.css">
     <link rel="stylesheet" href="assets/css/inputs.css">
     <link rel="stylesheet" href="assets/css/custom.css">
@@ -34,6 +35,7 @@ basePL::buildccs();
             </ul>
         </nav>
     </header>
+
     <main>
         <div class="tab-content" id="myTabContent">
             <section class="tab-pane italsis show active" id="dept" role="tabpanel" aria-labelledby="dept-tab">
@@ -44,9 +46,6 @@ basePL::buildccs();
             </section>
         </div>
     </main>
-
-    <script src="assets/js/entityClass.js"></script>
-    <script src="assets/js/entitySubClass.js"></script>
 </body>
 
 </html>

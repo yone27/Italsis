@@ -1,6 +1,8 @@
-<?php include_once("../../../includes/presentationLayer.php"); ?>
+<?php include_once("../../../includes/presentationLayer.php"); 
+include_once("./presentationLayerY.php");
+?>
 
-<div class="modal" id="assistantBankModalEdit">
+<div class="modal" id="table-assistantBankEditModal">
     <div class="modal-dialog">
         <section class="modal-content">
             <form id="edit-assistantBank-form">
@@ -11,22 +13,21 @@
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "code", "editCode", $code, "50");
-                    presentationLayer::buildInput("name", "name", "editName", $name, "50");
+                    presentationLayer::buildInput("code", "code", "editCode", $code, "50", "", "", "required");
+                    presentationLayer::buildInput("name", "name", "editName", $name, "50", "", "", "required");
                     ?>
                     <div class="filter-company-container">
                         <label>
                             <span>Nombre compañia :</span>
-                            <input style="text-transform: uppercase;" autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation2" placeholder="Nombre compañia">
+                            <input style="text-transform: uppercase;" autocomplete="off" name="idpartylocation" class="filter-company" type="text" required id="idpartylocation2" placeholder="Nombre compañia">
                         </label>
-                        <select style="text-transform: uppercase;" name="infocompany" class="menu-company hide" id="infocompany2" multiple="multiple">
+                        <select style="text-transform: uppercase;" required name="infocompany" class="menu-company hide" id="infocompany2" multiple="multiple">
                         </select>
                     </div>
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'editidentitysubclass', $sbl, $com, "id", "name", $identitysubclass);
+                    presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'editidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
                     ?>
-
                 </aside>
                 <footer class="modal-footer">
                     <button class="btn btn-default" type="button" aria-label="close modal" data-close>Cancelar</button>

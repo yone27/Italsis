@@ -1,32 +1,27 @@
 <?php include_once("../../../includes/presentationLayer.php");
-include_once("./presentationLayerY.php"); ?>
+include_once("./presentationLayerY.php");
+?>
 
-<div class="modal" id="formEntitySubClass">
+<div class="modal" id="tableEntitySubClassEditModal">
     <div class="modal-dialog">
         <section class="modal-content">
-            <form id="entitySubClass">
+            <form id="edit-entitySubClass-form">
+                <input type="hidden" name="id" id="idEdit">
                 <header class="modal-header">
-                    <h4 class="modal-title">Agregar Registro</h4>
-                    <button class="close-modal" type="button" id="modal2" aria-label="close modal" data-close>✕</button>
+                    <h4 class="modal-title">Editar Registro</h4>
+                    <button class="close-modal" type="button" id="modal3" aria-label="close modal" data-close>✕</button>
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "code", "code", "", "50");
-
-                    presentationLayer::buildInput("name", "name", "name", "", "50");
-                    presentationLayer::buildInput("observation", "observation", "observation", "", "50");
-                    presentationLayer::buildInput("identitysubclass", "identitysubclass", "identitysubclass", "", "50");
-
-                    //  presentationLayer::buildSelect("identityclass", "identityclass", "identityclass", "", "entityclass", "", "base", "");
-
-                    presentationLayer::buildInput("identityclass", "identityclass", "identityclass", "", "50");
-
+                    presentationLayer::buildInput("code", "code", "editCode", $code, "50", "", "", "required");
+                    presentationLayer::buildInput("name", "name", "editName", $name, "50", "", "", "required");
+                    presentationLayer::buildInput("observation", "observation", "editObservation", $observation, "50", "required");
                     ?>
                     <div class="toggle-button-cover">
                         <label>Generador</label>
                         <div class="button-cover d-flex align-items-center">
                             <div class="button r button-1">
-                                <input type="checkbox" class="checkbox" checked name="generator" id="generator">
+                                <input type="checkbox" class="checkbox" id="editGenerator">
                                 <div class="knobs"></div>
                                 <div class="layer"></div>
                             </div>

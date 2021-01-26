@@ -1,4 +1,8 @@
+import initModal from './Modal.js';
+
 // Pagination
+const tableHeaderPag = document.querySelector('#table-pagination-header')
+let tableName 
 let tbody = ''
 let pageSize = 5
 let pageNumber = 1
@@ -9,27 +13,62 @@ let recordHtml = ''
 function paginate(array, page_size, page_number) {
     return array.slice((page_number - 1) * page_size, page_number * page_size)
 }
+
 function nextPage() {
     pageNumber++
     showPagination(records)
+    initModal()
 }
+
 function previusPage() {
     pageNumber--
     showPagination(records)
+    initModal()
 }
+
+function incrementPageSize() {
+    tableHeaderPag.innerHTML = `<div class="pageSize-container">
+        <label for="pageSize">Mostrar</label>
+        <select id="pageSize">
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+        </select>
+    </div>`
+
+    const elPageSize = document.getElementById('pageSize')
+    elPageSize.addEventListener('change', function () {
+        pageSize = elPageSize.value
+        showPagination(records)
+    })
+}
+
 function showPagination(_records) {
+    // Inicializando variables
+    records = _records
+    globalData = _records
+
     if (_records.length >= 0) {
         let pagination = paginate(records, pageSize, pageNumber)
         recordHtml = ''
-        pagination.forEach(element => {
+
+        let newPagination = pagination.map(element => {
+            return {
+                ...element,
+                actions: `<button id="${element.id}" class="btn btn-info btn-sm rounded-pill editLink" aria-label="open modal" type="button" data-open="${tableName}EditModal">Edit</button> <button type="button" id="${element.id}" class="btn btn-danger btn-sm rounded-pill deleteLink">Delete<button>`
+            }
+        })
+        
+        newPagination.forEach((value) => {
             recordHtml += '<tr>'
-            recordHtml += '<td>' + element.id + '</td>'
-            recordHtml += '<td>' + element.code + '</td>'
-            recordHtml += '<td>' + element.name + '</td>'
-            recordHtml += '<td>' + element.dateregister + '</td>'
-            recordHtml += '<td>' + element.companyname + '</td>'
-            recordHtml += '<td>' + element.dept + '</td>'
-            recordHtml += `<td><button id="${element.id}" class="btn btn-info btn-sm rounded-pill editLink" aria-label="open modal" type="button" data-open="assistantBankModalEdit">Edit</button> <button type="button" id="${element.id}" class="btn btn-danger btn-sm rounded-pill deleteLink">Delete<button></td>`
+            for (const key in value) {
+                if (Object.hasOwnProperty.call(value, key)) {
+                    const element = value[key];
+                    recordHtml += `<td>${element}</td>`
+                }
+            }
             recordHtml += '</tr>'
         })
 
@@ -66,15 +105,17 @@ function showPagination(_records) {
     } else {
         tbody.innerHTML = _records.nodata
     }
-
 }
-function initPagination(res, table) {
-    records = res
-    globalData = res
-    tbody = document.querySelector(`${table} tbody`)
 
-    showPagination(records)
+function initPagination(table, showPageSize) {
+    tbody = document.querySelector(`${table} tbody`)
+    tableName = document.querySelector(`${table}`).id
+
+    if (showPageSize) {
+        incrementPageSize()
+    }
 }
 export {
-    initPagination
+    initPagination,
+    showPagination
 }

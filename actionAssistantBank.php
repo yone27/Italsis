@@ -130,6 +130,7 @@ if (isset($_POST['add'])) {
     ";
 
     $result = $dbl->executeCommand($com);
+    print_r($result);
     if ($result) {
         echo $util->showMessage('success', 'Registro guardado exitosamente');
     } else {
@@ -154,12 +155,9 @@ if (isset($_GET['fetchCompany'])) {
     $data = $dbl->executeReader($com);
 
     if ($data) {
-        /*$output = '';
-        foreach ($data as $row) {
-            $output .= '<option value=' . $row['id'] . '>' . $row['name'] . '</option>';
-        }
-        echo $output;*/
         echo json_encode($data);
+    }else{
+        echo json_encode(["error" => "data not match"]);
     }
 }
 

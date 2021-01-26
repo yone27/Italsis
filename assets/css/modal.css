@@ -48,6 +48,7 @@ button {
 }
 
 /*CUSTOM VARIABLES HERE*/
+
 .modal {
     overflow: hidden;
     position: fixed;
@@ -114,12 +115,12 @@ button {
     visibility: visible;
     opacity: 1;
 }
+
 .modal-body label {
     display: block;
 }
 
-.modal-body input,
-.modal-body select {
+.modal-body input, .modal-body select {
     display: block;
     width: 100%;
     height: 35px;

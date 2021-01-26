@@ -1,34 +1,34 @@
-<?php include_once("../../../../includes/presentationLayer.php"); ?>
+<?php include_once("../../../includes/presentationLayer.php");
+include_once("./presentationLayerY.php");?>
 
-<div class="modal" id="assistantBankModal">
+<div class="modal" id="formEntityClass">
     <div class="modal-dialog">
         <section class="modal-content">
-            <form id="assistantbankPL">
+            <form id="entityClass">
                 <header class="modal-header">
                     <h4 class="modal-title">Agregar Registro</h4>
                     <button class="close-modal" type="button" id="modal2" aria-label="close modal" data-close>✕</button>
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "scode", "scode", $code, "50");
-                    presentationLayer::buildInput("name", "sname", "sname", $name, "50");
+                    presentationLayer::buildInput("code", "code", "", '', "50", "","","required");
+                    presentationLayer::buildInput("name", "name", "", '', "50", "","","required");
+                    presentationLayer::buildInput("observation", "observation", "", '', "50", "","","required");
                     ?>
-                    <label>
-                        <span>Nombre compañia :</span>
-                        <input autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation1" placeholder="Nombre compañia">
-                    </label>
-                    <select name="infocompany" class="menu-company hide" id="infocompany1" multiple="multiple">
-                    </select>
-                    <?php
-
-                    $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass);
-                    ?>
-
+                    <div class="toggle-button-cover">
+                        <label>Generador</label>
+                        <div class="button-cover d-flex align-items-center">
+                            <div class="button r button-1">
+                                <input type="checkbox" class="checkbox" checked name="generator" id="generator">
+                                <div class="knobs"></div>
+                                <div class="layer"></div>
+                            </div>
+                        </div>
+                    </div>
                 </aside>
                 <footer class="modal-footer">
                     <button class="btn btn-default" type="button" aria-label="close modal" data-close>Cancelar</button>
-                    <button class="btn btn-primary" type="submit">Guardar</button>
+                    <button class="btn btn-primary" type="submit" id="btn-edit-data">Editar</button>
                 </footer>
             </form>
         </section>

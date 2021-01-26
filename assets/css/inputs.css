@@ -38,6 +38,7 @@ textarea.form-control.form-control{
     height: 100px;
 }
 
+
 /* -------------- Chechboxes -----------*/
 input[type="radio"], input[type="checkbox"] {
     box-sizing: border-box;
@@ -95,9 +96,6 @@ input[type="radio"], input[type="checkbox"] {
 .knobs {
     z-index: 2;
 }
-#button-1 .checkbox:checked ~ .layer {
-    background-color: #fcebeb;
-}
 .button.r, .button.r .layer {
     border-radius: 100px;
 }
@@ -107,16 +105,16 @@ input[type="radio"], input[type="checkbox"] {
     transition: 0.3s ease all;
     z-index: 1;
 }
-#button-1 .checkbox:checked + .knobs:before {
-    content: 'OFF';
-    left: 42px;
-    background-color: #f44336;
-}
-#button-1 .knobs, #button-1 .knobs:before, #button-1 .layer {
-    transition: 0.3s ease all;
-}
-#button-1 .knobs:before {
+
+
+.button-1 .checkbox:checked + .knobs:before {
     content: 'ON';
+    left: 42px;
+    background-color: #03A9F4;
+}
+
+.button-1 .knobs:before {
+    content: 'OFF';
     position: absolute;
     top: 4px;
     left: 4px;
@@ -128,9 +126,12 @@ input[type="radio"], input[type="checkbox"] {
     text-align: center;
     line-height: 1;
     padding: 9px 4px;
-    background-color: #03A9F4;
+    background-color: #f44336;
     border-radius: 50%;
     transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
+}
+.button-1 .knobs, .button-1 .knobs:before, .button-1 .layer {
+    transition: 0.3s ease all;
 }
 .toggle-button-cover .button-cover {
     margin-top: 22px;

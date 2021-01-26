@@ -25,5 +25,11 @@
 }
 .filter-company-container select  {
     margin-top: 0 !important;
+}
 
+#table-pagination-header {
+    display: flex;
+}
+#table-pagination-header label {
+    color: #5E5E5E;
 }

@@ -14,10 +14,11 @@ if (isset($_GET['fetchAll'])) {
             id,
             code,
             name,
+            identityclass,
             observation,
-            generator
+            identitysubclass
         FROM
-            base.entityclass
+            base.entitysubclass
         WHERE
             deleted = 'N'
         ";
@@ -38,7 +39,7 @@ if (isset($_POST['add'])) {
     $generator = $_POST['generator'];
 
     $com = "
-        INSERT INTO base.entityClass(
+        INSERT INTO base.entitysubClass(
             code, name, observation, generator, active, deleted)
         VALUES ('$code', '$name', '$observation', '$generator', 'Y', 'N');
     ";
@@ -56,7 +57,7 @@ if (isset($_GET['delete'])) {
     $id = $_GET['id'];
 
     $com = "
-    UPDATE base.entityclass
+    UPDATE base.entitysubclass
     SET deleted='Y'
     WHERE id = '$id'";
     $result = $dbl->executeCommand($com);
@@ -81,7 +82,7 @@ if (isset($_GET['edit'])) {
         BE.observation,
         BE.generator
     FROM 
-        base.entityclass BE
+        base.entitysubclass BE
     WHERE
         BE.deleted = 'N'
     AND 
@@ -105,7 +106,7 @@ if (isset($_POST['update'])) {
     $generator = $_POST['generator'];
 
     $com = "
-    UPDATE base.entityclass
+    UPDATE base.entitysubclass
     SET code='$code', name='$name', observation='$observation', generator='$generator'
     WHERE id='$id';
     ";

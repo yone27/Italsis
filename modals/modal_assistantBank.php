@@ -1,4 +1,7 @@
-<?php include_once("../../../includes/presentationLayer.php"); ?>
+<?php include_once("../../../includes/presentationLayer.php");
+include_once("./presentationLayerY.php");
+?>
+
 
 <div class="modal" id="assistantBankModal">
     <div class="modal-dialog">
@@ -10,23 +13,23 @@
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "scode", "scode", $code, "50");
-                    presentationLayer::buildInput("name", "sname", "sname", $name, "50");
+                    presentationLayerY::buildInput("code", "scode", "scode", $code, "50","", "","required");
+                    presentationLayerY::buildInput("name", "sname", "sname", $name, "50","", "","required");
                     ?>
+                    
                     <div class="filter-company-container">
                         <label>
                             <span>Nombre compañia :</span>
-                            <input autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation1" placeholder="Nombre compañia">
+                            <input autocomplete="off" name="idpartylocation" class="filter-company" type="text" id="idpartylocation1" required placeholder="Nombre compañia">
                         </label>
-                        <select name="infocompany" class="menu-company hide" id="infocompany1" multiple="multiple">
+                        <select name="infocompany" required class="menu-company hide" id="infocompany1" multiple="multiple">
                         </select>
                     </div>
+
                     <?php
-
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass);
+                    presentationLayerY::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass,"", "required");
                     ?>
-
                 </aside>
                 <footer class="modal-footer">
                     <button class="btn btn-default" type="button" aria-label="close modal" data-close>Cancelar</button>

@@ -13,16 +13,10 @@
 <div id="showAlert"></div>
 <h1 class="title title-a">
     entityclass
-    <button class="btn btn-success" aria-label="open modal" type="button" data-open="entityClassModal">Agregar nuevo registro</button>
+    <button class="btn btn-success" aria-label="open modal" type="button" data-open="formEntityClass">Agregar nuevo registro</button>
 </h1>
 <form method="post" name="entityclassPL">
     <div class="grid grid-2">
-        <?php
-        presentationLayer::buildInput("code", "code", "code", '', "50");
-        presentationLayer::buildInput("name", "name", "name", '', "50");
-        presentationLayer::buildInput("observation", "observation", "observation", '', "50");
-        presentationLayer::buildInput("generator", "generator", "generator", '', "50");
-        ?>
     </div>
 </form>
 
@@ -47,3 +41,8 @@
         </div>
     </div>
 </div>
+
+<?php include './modals/modal_entityClassEdit.php'; ?>
+<?php include './modals/modal_entityClass.php'; ?>
+
+<script type="module" src="assets/js/entityClass.js"></script>

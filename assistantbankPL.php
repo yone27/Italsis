@@ -24,7 +24,7 @@ include_once("assistantbankBL.php");
 chdir(dirname(__FILE__));
 include_once("../base/basePL.php");
 chdir(dirname(__FILE__));
-include_once("../../../includes/presentationLayer.php");
+include_once("./presentationLayerY.php");
 
 basePL::buildjs();
 basePL::buildccs();
@@ -95,23 +95,14 @@ $sbl->buildArray($arPar);
         <form method="post" name="assistantbankPL1" id="assistantbankPL1">
             <div class="grid grid-2">
                 <?php
-                presentationLayer::buildInput("Nombre compañia", "idpartylocation", "idpartylocation", $idpartylocation, "50");
+                presentationLayerY::buildInput("Nombre compañia", "idpartylocation", "idpartylocation", $idpartylocation, "50");
                 $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'identitysubclass', $sbl, $com, "id", "name", $identitysubclass);
+                presentationLayerY::buildSelectWithComEvent('Dept', 'identitysubclass', 'identitysubclass', $sbl, $com, "id", "name", $identitysubclass);
                 ?>
             </div>
         </form>
         <div class="table-custom">
             <div id="table-pagination-header">
-                <div class="pageSize-container">
-                    <!-- <label for="pageSize">Mostrar</label>
-                <select id="pageSize">
-                    <option value="10">10</option>
-                    <option value="25">25</option>
-                    <option value="50">50</option>
-                    <option value="100">100</option>
-                </select> -->
-                </div>
             </div>
             <table id="table-assistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
                 <thead>
@@ -128,12 +119,8 @@ $sbl->buildArray($arPar);
                 <tbody></tbody>
             </table>
             <div id="table-pagination-footer">
-                <div class="info">
-
-                </div>
-                <div class="buttons-pagination">
-
-                </div>
+                <div class="info"></div>
+                <div class="buttons-pagination"></div>
             </div>
         </div>
         <?php include './modals/modal_assistantBank.php'; ?>
