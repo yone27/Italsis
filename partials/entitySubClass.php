@@ -10,10 +10,9 @@
  */
 ?>
 
-<div id="showAlert"></div>
 <h1 class="title title-a">
     entitysubclass
-    <button class="btn btn-success" aria-label="open modal" type="button" data-open="formEntitySubClass">Agregar nuevo registro</button>
+    <button class="btn btn-success" aria-label="open modal" type="button" data-open="formEntitySubClass"><i class="fas fa-plus-circle"></i> Agregar nuevo registro</button>
 </h1>
 <form method="post" name="entitysubclassPL">
     <div class="grid grid-2">
@@ -29,22 +28,15 @@
                 <th>Name</th>
                 <th>EntityClass</th>
                 <th>Observation</th>
-                <th>IdEntitySubClass</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody></tbody>
     </table>
-    <div id="table-pagination-footer">
+    <div class="table-pagination-footer">
         <div class="info">
         </div>
         <div class="buttons-pagination">
         </div>
     </div>
 </div>
-
-
-<?php include './modals/modal_entitySubClassEdit.php'; ?>
-<?php include './modals/modal_entitySubClass.php'; ?>
-
-<script type="module" src="assets/js/entitySubClass.js"></script>

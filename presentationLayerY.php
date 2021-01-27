@@ -4,7 +4,7 @@ include_once("../../../includes/presentationLayer.php");
 session_start();
 
 /*==========================================================================  
-     Class: presentationLayer
+     Class: presentationLayerY
      Description: MVC View. Helper Methods
      Version: 1.0
      Remarks:
@@ -23,6 +23,7 @@ class presentationLayerY extends presentationLayer
         echo 'maxlength="' . $maxlength . '" placeholder="' . $title . '"></INPUT>';
         echo '</LABEL>';
     }
+    
     static function buildSelectWithComEvent(
         $title,
         $name,

@@ -1,8 +1,3 @@
-<?php include_once("../../../includes/presentationLayer.php");
-include_once("./presentationLayerY.php");
-?>
-
-
 <div class="modal" id="assistantBankModal">
     <div class="modal-dialog">
         <section class="modal-content">
@@ -28,7 +23,7 @@ include_once("./presentationLayerY.php");
 
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayerY::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass,"", "required");
+                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass,"", "required");
                     ?>
                 </aside>
                 <footer class="modal-footer">

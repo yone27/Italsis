@@ -1,4 +1,4 @@
-#table-pagination-footer {
+.table-pagination-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -27,9 +27,15 @@
     margin-top: 0 !important;
 }
 
-#table-pagination-header {
+.table-pagination-header {
     display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-#table-pagination-header label {
+.table-pagination-header label {
     color: #5E5E5E;
+}
+
+.input-filter {
+    margin: 0 !important;
 }

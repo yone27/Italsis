@@ -31,6 +31,7 @@ if (isset($_GET['fetchAll'])) {
             LA.identitysubclass = BES.id
         AND	
             LA.deleted = 'N'
+        ORDER BY id
         ";
     $data = $dbl->executeReader($q);
 
@@ -43,7 +44,7 @@ if (isset($_GET['fetchAll'])) {
 
 // handle fetch filter by Departamento
 if (isset($_GET['fetchDept'])) {
-    $identitysubclass = $_GET['fetchDept'];
+    $identitysubclass = $util->testInput($_GET['fetchDept']);
     if ($identitysubclass) {
         $com = "
             SELECT 
@@ -80,8 +81,8 @@ if (isset($_GET['fetchDept'])) {
 
 // handle fetch filter by Company Name
 if (isset($_GET['fetchNameCompany'])) {
-    $nameCompany = $_GET['fetchNameCompany'];
-    $nameCompany = strtoupper($nameCompany);
+    $nameCompany = $util->testInput($_GET['fetchNameCompany']);
+    $nameCompany = strtoupper($util->testInput($nameCompany));
     $com = "
     SELECT 
         -- assistantbank
@@ -117,11 +118,11 @@ if (isset($_GET['fetchNameCompany'])) {
 
 // handle fetch add
 if (isset($_POST['add'])) {
-    $code = $_POST['scode'];
-    $name = $_POST['sname'];
+    $code = $util->testInput($_POST['scode']);
+    $name = $util->testInput($_POST['sname']);
     $dateregister = date("Y-m-d");
-    $idpartylocation = $_POST['infocompany'];
-    $identitysubclass = $_POST['sidentitysubclass'];
+    $idpartylocation = $util->testInput($_POST['infocompany']);
+    $identitysubclass = $util->testInput($_POST['sidentitysubclass']);
 
     $com = "
         INSERT INTO libertyweb.assistantbank(
@@ -140,8 +141,8 @@ if (isset($_POST['add'])) {
 
 // handle fetch data company
 if (isset($_GET['fetchCompany'])) {
-    $nameCompany = $_GET['fetchCompany'];
-    $nameCompany = strtoupper($nameCompany);
+    $nameCompany = $util->testInput($_GET['fetchCompany']);
+    $nameCompany = strtoupper($util->testInput($nameCompany));
 
     $com = "
     SELECT 
@@ -163,7 +164,7 @@ if (isset($_GET['fetchCompany'])) {
 
 // handle delete data fetch request
 if (isset($_GET['delete'])) {
-    $id = $_GET['id'];
+    $id = $util->testInput($_GET['id']);
 
     $com = "
     UPDATE libertyweb.assistantbank
@@ -180,7 +181,7 @@ if (isset($_GET['delete'])) {
 
 // handle edit data fetch request
 if (isset($_GET['edit'])) {
-    $id = $_GET['id'];
+    $id = $util->testInput($_GET['id']);
 
     $com = "
     SELECT 
@@ -216,11 +217,11 @@ if (isset($_GET['edit'])) {
 
 // handle update data fetch request
 if (isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $idpartylocation = $_POST['infocompany'];
-    $identitysubclass = $_POST['identitysubclass'];
+    $id = $util->testInput($_POST['id']);
+    $code = $util->testInput($_POST['code']);
+    $name = $util->testInput($_POST['name']);
+    $idpartylocation = $util->testInput($_POST['infocompany']);
+    $identitysubclass = $util->testInput($_POST['identitysubclass']);
 
     $com = "
     UPDATE libertyweb.assistantbank

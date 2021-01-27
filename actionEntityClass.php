@@ -20,6 +20,7 @@ if (isset($_GET['fetchAll'])) {
             base.entityclass
         WHERE
             deleted = 'N'
+        ORDER BY id
         ";
     $data = $dbl->executeReader($q);
 
@@ -32,10 +33,10 @@ if (isset($_GET['fetchAll'])) {
 
 // handle fetch add
 if (isset($_POST['add'])) {
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $observation = $_POST['observation'];
-    $generator = $_POST['generator'];
+    $code = $util->testInput($_POST['code']);
+    $name = $util->testInput($_POST['name']);
+    $observation = $util->testInput($_POST['observation']);
+    $generator = $util->testInput($_POST['generator']);
 
     $com = "
         INSERT INTO base.entityClass(
@@ -53,7 +54,7 @@ if (isset($_POST['add'])) {
 
 // handle delete data fetch request
 if (isset($_GET['delete'])) {
-    $id = $_GET['id'];
+    $id = $util->testInput($_GET['id']);
 
     $com = "
     UPDATE base.entityclass
@@ -70,7 +71,7 @@ if (isset($_GET['delete'])) {
 
 // handle edit data fetch request
 if (isset($_GET['edit'])) {
-    $id = $_GET['id'];
+    $id = $util->testInput($_GET['id']);
 
     $com = "
     SELECT 
@@ -98,11 +99,11 @@ if (isset($_GET['edit'])) {
 
 // handle update data fetch request
 if (isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $observation = $_POST['observation'];
-    $generator = $_POST['generator'];
+    $id = $util->testInput($_POST['id']);
+    $code = $util->testInput($_POST['code']);
+    $name = $util->testInput($_POST['name']);
+    $observation = $util->testInput($_POST['observation']);
+    $generator = $util->testInput($_POST['generator']);
 
     $com = "
     UPDATE base.entityclass

@@ -1,6 +1,5 @@
-//import Alert from './modules/Alert.js';
-import { initPagination, showPagination } from './modules/Pagination.js';
-import initModal from './modules/Modal.js';
+import { Pagination } from './modules/Pagination.js';
+import Modal from './modules/Modal.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const selectDept = document.getElementById('identitysubclass')
@@ -10,13 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const infocompany2 = document.getElementById('infocompany2')
     const formAssistantbankPL = document.getElementById('assistantbankPL')
     const filterByCompany = document.getElementById('idpartylocation')
-    const tbody = document.querySelector('#table-assistantBank tbody')
+    const tbody = document.querySelector('#tableAssistantBank tbody')
     const updateForm = document.getElementById('edit-assistantBank-form')
     const updateUserBtn = document.getElementById('btn-edit-data')
     const showAlert = document.getElementById('showAlert')
+    const pagination = new Pagination('#tableAssistantBank')
+    const modal = new Modal()
     const URI = 'actionAssistantBank.php'
-
-    initPagination('#table-assistantBank')
 
     // Search all data
     const fetchAllData = async () => {
@@ -24,8 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'GET'
         })
         const res = await data.json()
-        showPagination(res)
-        initModal()
+        pagination.showPagination(res)
+        modal.initModal()
     }
     fetchAllData()
 
@@ -38,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'GET'
             })
             const res = await data.json()
-            showPagination(res)
+            pagination.showPagination(res)
         } else {
             fetchAllData()
         }
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
             })
 
             const res = await data.json()
-            showPagination(res)
+            pagination.showPagination(res)
         } else {
             fetchAllData()
         }
@@ -71,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body: formData
         })
         const res = await data.text()
-        
+
         showAlert.innerHTML = res
         fetchAllData()
         document.getElementById('modal2').click()
@@ -143,6 +142,12 @@ document.addEventListener('DOMContentLoaded', function () {
             dest.classList.add('hide')
             dest.innerHTML = ""
         }
+
+        // si da click en el select ponloo en el input
+        dest.addEventListener('change', e => {
+            const selectedOption = dest.options[dest.selectedIndex]
+            src.value = selectedOption.textContent
+        })
     }
 
     idpartylocation1.addEventListener('input', async e => {
@@ -151,20 +156,10 @@ document.addEventListener('DOMContentLoaded', function () {
         filterCompanyInput(idpartylocation1, infocompany1)
     })
 
-    infocompany1.addEventListener('change', e => {
-        const selectedOption = infocompany1.options[infocompany1.selectedIndex]
-        idpartylocation1.value = selectedOption.textContent
-    })
-
     idpartylocation2.addEventListener('input', async e => {
         e.preventDefault()
         // Buscar compañia
         filterCompanyInput(idpartylocation2, infocompany2, true)
-    })
-
-    infocompany2.addEventListener('change', e => {
-        const selectedOption = infocompany2.options[infocompany2.selectedIndex]
-        idpartylocation2.value = selectedOption.textContent
     })
 
     // edit data fetch
@@ -212,7 +207,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         const res = await data.text()
         // reset form, hide modal,
-
         showAlert.innerHTML = res
         updateUserBtn.value = 'Editar'
         //updateForm.classList.remove('was-validated')
@@ -241,5 +235,5 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Inicializamos todos los modales
-    initModal()
+    modal.initModal()
 })

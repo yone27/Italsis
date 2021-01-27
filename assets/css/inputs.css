@@ -1,10 +1,12 @@
 .btn {
     padding: 6px 12px;
 }
+
 textarea.form-control {
     overflow: auto;
     resize: vertical;
 }
+
 .form-control {
     display: block;
     width: 100%;
@@ -34,22 +36,25 @@ textarea.form-control {
     border-radius: .3rem;
 }
 
-textarea.form-control.form-control{
+textarea.form-control.form-control {
     height: 100px;
 }
 
-
 /* -------------- Chechboxes -----------*/
+
 input[type="radio"], input[type="checkbox"] {
     box-sizing: border-box;
     padding: 0;
 }
+
 .align-items-center {
     align-items: center !important;
 }
+
 .d-flex {
     display: flex !important;
 }
+
 .toggle-button-cover {
     position: relative;
     width: 100%;
@@ -58,6 +63,7 @@ input[type="radio"], input[type="checkbox"] {
     box-sizing: border-box;
     margin-bottom: 20px;
 }
+
 .button-cover, .knobs, .layer {
     position: absolute;
     top: 0;
@@ -65,20 +71,24 @@ input[type="radio"], input[type="checkbox"] {
     bottom: 0;
     left: 0;
 }
+
 .button-cover {
     height: 40px;
     margin-right: 20px;
     background-color: #fff;
 }
+
 .layer {
     border-radius: 100px;
 }
+
 .button {
     position: relative;
     width: 74px;
     height: 36px;
     overflow: hidden;
 }
+
 .checkbox {
     position: relative;
     width: 100%;
@@ -93,12 +103,15 @@ input[type="radio"], input[type="checkbox"] {
     height: 100% !important;
     max-height: initial;
 }
+
 .knobs {
     z-index: 2;
 }
+
 .button.r, .button.r .layer {
     border-radius: 100px;
 }
+
 .layer {
     width: 100%;
     background-color: #ebf7fc;
@@ -106,8 +119,7 @@ input[type="radio"], input[type="checkbox"] {
     z-index: 1;
 }
 
-
-.button-1 .checkbox:checked + .knobs:before {
+.button-1 .checkbox:checked+.knobs:before {
     content: 'ON';
     left: 42px;
     background-color: #03A9F4;
@@ -130,9 +142,16 @@ input[type="radio"], input[type="checkbox"] {
     border-radius: 50%;
     transition: 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15) all;
 }
+
 .button-1 .knobs, .button-1 .knobs:before, .button-1 .layer {
     transition: 0.3s ease all;
 }
+
 .toggle-button-cover .button-cover {
     margin-top: 22px;
+}
+
+button .fa, button .fas {
+    position: relative;
+    z-index: -50;
 }

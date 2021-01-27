@@ -10,17 +10,20 @@ $errors = [];
 // handle fetch all
 if (isset($_GET['fetchAll'])) {
     $q = "
-        SELECT
-            id,
-            code,
-            name,
-            identityclass,
-            observation,
-            identitysubclass
-        FROM
-            base.entitysubclass
-        WHERE
-            deleted = 'N'
+    SELECT
+        BESC.id,
+        BESC.code,
+        BESC.name,
+        BEC.name as entityclass,
+        BESC.observation
+    FROM
+        base.entitysubclass BESC,
+        base.entityclass BEC
+    WHERE
+        BESC.deleted = 'N'
+    AND
+        BESC.identityclass= BEC.id
+    ORDER BY BESC.id DESC
         ";
     $data = $dbl->executeReader($q);
 
@@ -33,17 +36,16 @@ if (isset($_GET['fetchAll'])) {
 
 // handle fetch add
 if (isset($_POST['add'])) {
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $observation = $_POST['observation'];
-    $generator = $_POST['generator'];
+    $code = $util->testInput($_POST['code']);
+    $name = $util->testInput($_POST['name']);
+    $identityclass = $util->testInput($_POST['entityclassSelect']);
+    $observation = $util->testInput($_POST['observation']);
 
     $com = "
         INSERT INTO base.entitysubClass(
-            code, name, observation, generator, active, deleted)
-        VALUES ('$code', '$name', '$observation', '$generator', 'Y', 'N');
+            code, name,identityclass, observation, active, deleted)
+        VALUES ('$code', '$name','$identityclass', '$observation', 'Y', 'N');
     ";
-
     $result = $dbl->executeCommand($com);
     if ($result) {
         echo $util->showMessage('success', 'Registro guardado exitosamente');
@@ -54,7 +56,7 @@ if (isset($_POST['add'])) {
 
 // handle delete data fetch request
 if (isset($_GET['delete'])) {
-    $id = $_GET['id'];
+    $id =  $util->testInput($_GET['id']);
 
     $com = "
     UPDATE base.entitysubclass
@@ -71,22 +73,24 @@ if (isset($_GET['delete'])) {
 
 // handle edit data fetch request
 if (isset($_GET['edit'])) {
-    $id = $_GET['id'];
+    $id =  $util->testInput($_GET['id']);
 
     $com = "
-    SELECT 
-        -- assistantbank
-        BE.id,
-        BE.code,
-        BE.name, 
-        BE.observation,
-        BE.generator
-    FROM 
-        base.entitysubclass BE
+    SELECT
+        BESC.id,
+        BESC.code,
+        BESC.name,
+        BEC.name as entityclass,
+        BESC.observation
+    FROM
+        base.entitysubclass BESC,
+        base.entityclass BEC
     WHERE
-        BE.deleted = 'N'
-    AND 
-        BE.id = '$id'";
+        BESC.id = '$id'
+    AND
+        BESC.deleted = 'N'
+    AND
+        BESC.identityclass= BEC.id";
 
     $data = $dbl->executeReader($com);
 
@@ -99,21 +103,45 @@ if (isset($_GET['edit'])) {
 
 // handle update data fetch request
 if (isset($_POST['update'])) {
-    $id = $_POST['id'];
-    $code = $_POST['code'];
-    $name = $_POST['name'];
-    $observation = $_POST['observation'];
-    $generator = $_POST['generator'];
+    $id =  $util->testInput($_POST['id']);
+    $code =  $util->testInput($_POST['code']);
+    $name =  $util->testInput($_POST['name']);
+    $observation =  $util->testInput($_POST['observation']);
+    $identityclass =  $util->testInput($_POST['entityclassSelect1']);
 
     $com = "
     UPDATE base.entitysubclass
-    SET code='$code', name='$name', observation='$observation', generator='$generator'
+    SET code='$code', name='$name', observation='$observation', identityclass='$identityclass'
     WHERE id='$id';
     ";
+
     $result = $dbl->executeCommand($com);
     if ($result) {
         echo $util->showMessage('success', 'Datos actualizados satisfactoriamente');
     } else {
         echo $util->showMessage('danger', 'Hubo un Error');
+    }
+}
+
+// handle fetch data entityclass
+if (isset($_GET['fetchEntityClass'])) {
+    $entityclass =  $util->testInput($_GET['fetchEntityClass']);
+    $entityclass = strtoupper($util->testInput($entityclass));
+
+    $com = "
+    SELECT 
+        -- Nombre de la compañia
+        BEC.name,
+        BEC.id
+    FROM 
+        base.entityclass  BEC
+    WHERE UPPER(BEC.name) LIKE '%$entityclass%'
+        ";
+    $data = $dbl->executeReader($com);
+
+    if ($data) {
+        echo json_encode($data);
+    } else {
+        echo json_encode(["error" => "data not match"]);
     }
 }

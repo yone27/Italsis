@@ -104,7 +104,7 @@ $sbl->buildArray($arPar);
         <div class="table-custom">
             <div id="table-pagination-header">
             </div>
-            <table id="table-assistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
+            <table id="tableAssistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -118,7 +118,7 @@ $sbl->buildArray($arPar);
                 </thead>
                 <tbody></tbody>
             </table>
-            <div id="table-pagination-footer">
+            <div class="table-pagination-footer">
                 <div class="info"></div>
                 <div class="buttons-pagination"></div>
             </div>

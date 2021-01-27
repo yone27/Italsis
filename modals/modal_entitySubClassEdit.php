@@ -1,36 +1,33 @@
-<?php include_once("../../../includes/presentationLayer.php");
-include_once("./presentationLayerY.php");
-?>
-
 <div class="modal" id="tableEntitySubClassEditModal">
     <div class="modal-dialog">
         <section class="modal-content">
             <form id="edit-entitySubClass-form">
-                <input type="hidden" name="id" id="idEdit">
+                <input type="hidden" name="id">
                 <header class="modal-header">
-                    <h4 class="modal-title">Editar Registro</h4>
+                    <h4 class="modal-title">Editar Registro Entity Sub Class</h4>
                     <button class="close-modal" type="button" id="modal3" aria-label="close modal" data-close>✕</button>
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "code", "editCode", $code, "50", "", "", "required");
-                    presentationLayer::buildInput("name", "name", "editName", $name, "50", "", "", "required");
-                    presentationLayer::buildInput("observation", "observation", "editObservation", $observation, "50", "required");
+                    presentationLayerY::buildInput("code", "code", "", $code, "50", "", "", "required");
+                    presentationLayerY::buildInput("name", "name", "", $name, "50", "", "", "required");
                     ?>
-                    <div class="toggle-button-cover">
-                        <label>Generador</label>
-                        <div class="button-cover d-flex align-items-center">
-                            <div class="button r button-1">
-                                <input type="checkbox" class="checkbox" id="editGenerator">
-                                <div class="knobs"></div>
-                                <div class="layer"></div>
-                            </div>
-                        </div>
+                    <div class="filter-company-container">
+                        <label>
+                            <span>Nombre entityClass :</span>
+                            <input class="filter-company" name="entityclassInput1" id="entityclassInput1" type="text" required placeholder="Nombre entityClass" autocomplete="off">
+                        </label>
+                        <select class="menu-company hide" id="entityclassSelect1" name="entityclassSelect1" required multiple="multiple">
+                        </select>
                     </div>
+                    <label>
+                        <span>observation :</span>
+                        <textarea class="form-control" name="observation" placeholder="Comentario..."></textarea>
+                    </label>
                 </aside>
                 <footer class="modal-footer">
                     <button class="btn btn-default" type="button" aria-label="close modal" data-close>Cancelar</button>
-                    <button class="btn btn-primary" type="submit" id="btn-edit-data">Editar</button>
+                    <button class="btn btn-primary" id="btn-edit-data" type="submit">Editar</button>
                 </footer>
             </form>
         </section>

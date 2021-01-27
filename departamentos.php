@@ -4,7 +4,7 @@ error_reporting(0);
 chdir(dirname(__FILE__));
 include_once("../base/basePL.php");
 chdir(dirname(__FILE__));
-include_once("../../../includes/presentationLayer.php");
+include_once("./presentationLayerY.php");
 
 basePL::buildjs();
 basePL::buildccs();
@@ -15,6 +15,8 @@ basePL::buildccs();
 <head>
     <title>Tabla maestra</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous"> -->
+
     <link rel="stylesheet" href="assets/css/modal.css">
     <link rel="stylesheet" href="assets/css/alerts.css">
     <link rel="stylesheet" href="assets/css/pagination.css">
@@ -23,6 +25,8 @@ basePL::buildccs();
 </head>
 
 <body class="container-custom">
+    <div id="showAlert"></div>
+
     <header>
         <nav>
             <ul class="nav nav-tabs" id="myTab" role="tablist" style="margin-bottom: 10px;">
@@ -46,6 +50,15 @@ basePL::buildccs();
             </section>
         </div>
     </main>
+
+    <?php include './modals/modal_entitySubClassEdit.php'; ?>
+    <?php include './modals/modal_entitySubClass.php'; ?>
+
+    <?php include './modals/modal_entityClassEdit.php'; ?>
+    <?php include './modals/modal_entityClass.php'; ?>
+
+    <script type="module" src="assets/js/entityClass.js"></script>
+    <script type="module" src="assets/js/entitySubClass.js"></script>
 </body>
 
 </html>

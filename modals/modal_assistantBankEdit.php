@@ -1,8 +1,4 @@
-<?php include_once("../../../includes/presentationLayer.php"); 
-include_once("./presentationLayerY.php");
-?>
-
-<div class="modal" id="table-assistantBankEditModal">
+<div class="modal" id="tableAssistantBankEditModal">
     <div class="modal-dialog">
         <section class="modal-content">
             <form id="edit-assistantBank-form">
@@ -13,8 +9,8 @@ include_once("./presentationLayerY.php");
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayer::buildInput("code", "code", "editCode", $code, "50", "", "", "required");
-                    presentationLayer::buildInput("name", "name", "editName", $name, "50", "", "", "required");
+                    presentationLayerY::buildInput("code", "code", "editCode", $code, "50", "", "", "required");
+                    presentationLayerY::buildInput("name", "name", "editName", $name, "50", "", "", "required");
                     ?>
                     <div class="filter-company-container">
                         <label>
@@ -26,7 +22,7 @@ include_once("./presentationLayerY.php");
                     </div>
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'identitysubclass', 'editidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
+                    presentationLayerY::buildSelectWithComEvent('Dept', 'identitysubclass', 'editidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
                     ?>
                 </aside>
                 <footer class="modal-footer">

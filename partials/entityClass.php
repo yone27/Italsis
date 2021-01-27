@@ -10,10 +10,9 @@
  */
 ?>
 
-<div id="showAlert"></div>
 <h1 class="title title-a">
     entityclass
-    <button class="btn btn-success" aria-label="open modal" type="button" data-open="formEntityClass">Agregar nuevo registro</button>
+    <button class="btn btn-success" aria-label="open modal" type="button" data-open="formEntityClass"><i class="fas fa-plus-circle"></i> Agregar nuevo registro</button>
 </h1>
 <form method="post" name="entityclassPL">
     <div class="grid grid-2">
@@ -34,15 +33,10 @@
         </thead>
         <tbody></tbody>
     </table>
-    <div id="table-pagination-footer">
+    <div class="table-pagination-footer">
         <div class="info">
         </div>
         <div class="buttons-pagination">
         </div>
     </div>
 </div>
-
-<?php include './modals/modal_entityClassEdit.php'; ?>
-<?php include './modals/modal_entityClass.php'; ?>
-
-<script type="module" src="assets/js/entityClass.js"></script>

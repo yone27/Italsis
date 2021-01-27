@@ -1,5 +1,5 @@
-import { initPagination, showPagination } from './modules/Pagination.js';
-import initModal from './modules/Modal.js';
+import { Pagination } from './modules/Pagination.js';
+import Modal from './modules/Modal.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const formEntityClass = document.getElementById('entityClass')
@@ -7,9 +7,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const tbody = document.querySelector('#tableEntityClass tbody')
     const updateForm = document.getElementById('edit-entityClass-form')
     const updateUserBtn = document.getElementById('btn-edit-data')
+    const pagination = new Pagination('#tableEntityClass')
+    const modal = new Modal()
     const URI = 'actionEntityClass.php'
-
-    initPagination('#tableEntityClass')
 
     // Search all data
     const fetchAllData = async () => {
@@ -18,10 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
         })
 
         const res = await data.json()
-        showPagination(res)
-        initModal()
+        pagination.showPagination(res)
+        modal.initModal()
     }
-    fetchAllData()
 
     // Add new record
     formEntityClass.addEventListener('submit', async e => {
@@ -29,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Validar que todos los campos esten llenos
         const formData = new FormData(formEntityClass)
-        if (document.getElementById('generator').checked) {
+        if (document.querySelector(`#${formEntityClass.getAttribute('id')} [name="generator"]`).checked) {
             formData.append('generator', 'Y')
         } else {
             formData.append('generator', 'N')
@@ -44,7 +43,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const res = await data.text()
         showAlert.innerHTML = res
         fetchAllData()
-        document.getElementById('modal2').click()
+        // Cerrando el modal
+        document.querySelector(`#${formEntityClass.getAttribute('id')} [class="close-modal"]`).click()
     })
 
     // delete data fetch request
@@ -67,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
-
     // edit data fetch
     tbody.addEventListener('click', e => {
         if (e.target && e.target.matches('button.editLink')) {
@@ -82,28 +81,30 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'GET'
         })
         const res = await data.json()
-
-        document.getElementById('idEdit').value = res[0].id
-        document.getElementById('editCode').value = res[0].code
-        document.getElementById('editName').value = res[0].name
-        document.getElementById('editObservation').value = res[0].observation
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="id"]`).value = res[0].id
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="code"]`).value = res[0].code
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="name"]`).value = res[0].name
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="observation"]`).value = res[0].observation
         
         if(res[0].generator === 'Y') {
-            document.getElementById('editGenerator').setAttribute('checked', 'true')
+            document.querySelector(`#${updateForm.getAttribute('id')} [name="generator"]`).setAttribute('checked', 'true')
         }else{
-            document.getElementById('editGenerator').removeAttribute('checked')
+            document.querySelector(`#${updateForm.getAttribute('id')} [name="generator"]`).removeAttribute('checked')
         }
+
     }
 
     // update data fetch request
     updateForm.addEventListener('submit', async e => {
         e.preventDefault()
         const formData = new FormData(updateForm)
-        if (document.getElementById('editGenerator').checked) {
+
+        if (document.querySelector(`#${updateForm.getAttribute('id')} [name="generator"]`).checked) {
             formData.append('generator', 'Y')
         } else {
             formData.append('generator', 'N')
         }
+
         formData.append('update', 1)
         updateUserBtn.value = 'please wait...'
         const data = await fetch(`${URI}`, {
@@ -116,11 +117,14 @@ document.addEventListener('DOMContentLoaded', function () {
         showAlert.innerHTML = res
         updateUserBtn.value = 'Editar'
         fetchAllData()
-        document.getElementById('modal3').click()
+        // Cerrando el modal
+        document.querySelector(`#${updateForm.getAttribute('id')} [class="close-modal"]`).click()
+        modal.initModal()
+
     })
 
-
-    // Inicializamos todos los modales
-    initModal()
+    // Inicializamos todos
+    modal.initModal()
+    fetchAllData()
 })
 
