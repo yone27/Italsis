@@ -102,8 +102,6 @@ $sbl->buildArray($arPar);
             </div>
         </form>
         <div class="table-custom">
-            <div id="table-pagination-header">
-            </div>
             <table id="tableAssistantBank" class="table table-striped table-bordered text-center" style="max-width: 100%;">
                 <thead>
                     <tr>

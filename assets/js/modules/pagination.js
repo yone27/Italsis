@@ -39,9 +39,11 @@ export class Pagination extends Modal {
         `
         // Agregando contenido al elemento y agregando al dom
         el.innerHTML = templateHTML
+        console.log(this.tbody.closest('.table-custom'));
         this.tbody.closest('.table-custom').prepend(el)
 
         // Funcionalidad de pagesize    
+        // console.log(this.tbody);
         const elPageSize = this.tbody.parentElement.previousElementSibling.children[0].children[1]
         elPageSize.addEventListener('change', () => {
             this.pageSize = elPageSize.value
