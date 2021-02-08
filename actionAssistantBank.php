@@ -31,7 +31,7 @@ if (isset($_GET['fetchAll'])) {
             LA.identitysubclass = BES.id
         AND	
             LA.deleted = 'N'
-        ORDER BY id
+        ORDER BY id DESC
         ";
     $data = $dbl->executeReader($q);
 
@@ -120,18 +120,47 @@ if (isset($_GET['fetchNameCompany'])) {
 if (isset($_POST['add'])) {
     $code = $util->testInput($_POST['scode']);
     $name = $util->testInput($_POST['sname']);
+    $idpartybankinfo = $util->testInput($_POST['idpartybankinfo']);
     $dateregister = date("Y-m-d");
     $idpartylocation = $util->testInput($_POST['infocompany']);
     $identitysubclass = $util->testInput($_POST['sidentitysubclass']);
 
+    // Agregar registro
     $com = "
-        INSERT INTO libertyweb.assistantbank(
-            code, name, dateregister, active, deleted, idpartylocation, identitysubclass)
-        VALUES ('$code', '$name', '$dateregister', 'Y', 'N', '$idpartylocation', '$identitysubclass');
+    INSERT INTO libertyweb.assistantbank(
+        code, name,idpartybankinfo, dateregister, active, deleted, idpartylocation, identitysubclass)
+        VALUES ('$code', '$name','$idpartybankinfo', '$dateregister', 'Y', 'N', '$idpartylocation', '$identitysubclass');
+        ";
+    $result = $dbl->executeCommand($com);
+    // Actualizar registro para que no salga la cuenta agregada nuevamenet
+    $comBankInfo = "
+    UPDATE party.partybankinfo
+    SET active='N'
+    WHERE id='$idpartybankinfo';
+    ";
+    $bankInfo = $dbl->executeCommand($comBankInfo);
+
+
+    if ($result && $bankInfo) {
+        echo $util->showMessage('success', 'Registro guardado exitosamente');
+    } else {
+        echo $util->showMessage('danger', 'Hubo un problema');
+    }
+}
+
+// handle fetch add acccount
+if (isset($_POST['addAccount'])) {
+    $bankaccount = $util->testInput($_POST['bankAccount']);
+    $bankname = $util->testInput($_POST['bankName']);
+    $idparty = $util->testInput($_POST['idparty']);
+
+    $com = "
+        INSERT INTO party.partybankinfo(
+            idparty, bankname, bankaccount)
+        VALUES ('$idparty', '$bankname','$bankaccount');
     ";
 
     $result = $dbl->executeCommand($com);
-    print_r($result);
     if ($result) {
         echo $util->showMessage('success', 'Registro guardado exitosamente');
     } else {
@@ -157,7 +186,7 @@ if (isset($_GET['fetchCompany'])) {
 
     if ($data) {
         echo json_encode($data);
-    }else{
+    } else {
         echo json_encode(["error" => "data not match"]);
     }
 }
@@ -233,5 +262,25 @@ if (isset($_POST['update'])) {
         echo $util->showMessage('success', 'Datos actualizados satisfactoriamente');
     } else {
         echo $util->showMessage('danger', 'Hubo un Error');
+    }
+}
+
+
+// Handle fetch accounts by company
+if (isset($_GET['accountByIdparty'])) {
+    $idpartylocation = $util->testInput($_GET['accountByIdparty']);
+
+    // TODAS LAS CUENTAS QUE TIENE EN PARTYBANKINFO
+    $com = "
+    SELECT id,bankname, bankaccount
+    FROM party.partybankinfo
+    WHERE idparty = '$idpartylocation'
+    AND active = 'Y';
+         ";
+    $data = $dbl->executeReader($com);
+    if ($data) {
+        echo json_encode($data);
+    } else {
+        echo json_encode(["error" => "Ya agrego todas sus cuentas"]);
     }
 }

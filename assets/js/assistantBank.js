@@ -1,21 +1,86 @@
 import { Pagination } from './modules/Pagination.js';
 import Modal from './modules/Modal.js';
+import InputFilter from './modules/InputFilter.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const selectDept = document.getElementById('identitysubclass')
-    const idpartylocation1 = document.getElementById('idpartylocation1')
-    const infocompany1 = document.getElementById('infocompany1')
-    const idpartylocation2 = document.getElementById('idpartylocation2')
-    const infocompany2 = document.getElementById('infocompany2')
     const formAssistantbankPL = document.getElementById('assistantbankPL')
+    const formPartyBankInfo = document.getElementById('formPartyBankInfo')
+    const updateForm = document.getElementById('edit-assistantBank-form')
     const filterByCompany = document.getElementById('idpartylocation')
     const tbody = document.querySelector('#tableAssistantBank tbody')
-    const updateForm = document.getElementById('edit-assistantBank-form')
     const updateUserBtn = document.getElementById('btn-edit-data')
     const showAlert = document.getElementById('showAlert')
-    const pagination = new Pagination('#tableAssistantBank')
-    const modal = new Modal()
+
     const URI = 'actionAssistantBank.php'
+    const pagination = new Pagination('#tableAssistantBank')
+    const filter1 = new InputFilter('idpartylocation1', 'infocompany1')
+    const filter2 = new InputFilter('idpartylocation2', 'infocompany2', undefined, true)
+
+    const test = document.getElementById('infocompany1')
+
+    const input3 = document.getElementById('input3')
+    const select3 = document.getElementById('select3')
+    const infocompany1 = document.getElementById('infocompany1')
+
+    document.getElementById('idpartylocation1').value = 'PEDRO JOSE NUÑEZ  ZABALA '
+    // const filter3 = new InputFilter('idpartylocation1', 'select3', 'actionAssistantBank.php?test')
+    const modal = new Modal()
+
+    // asignar idparty para cuando quiera agregar una nueva cuenta
+    test.addEventListener('change', async (e) => {
+        e.preventDefault()
+        const selectedOption = test.options[test.selectedIndex]
+        if (selectedOption.value) {
+            document.querySelector(`#${formPartyBankInfo.getAttribute('id')} [name="idparty"]`).value = selectedOption.value
+        }
+    })
+
+    // PEDRO JOSE NUÑEZ ZABALA
+    infocompany1.addEventListener('change', async (e) => {
+        e.preventDefault()
+        const selectedOption = infocompany1.options[infocompany1.selectedIndex]
+        const data = await fetch(`${URI}?accountByIdparty=${selectedOption.value}`, {
+            method: 'GET'
+        })
+        const res = await data.json()
+
+        if (!res.error) {
+            let output = ""
+            res.forEach(element => {
+                output += `<option data-bankName="${element.bankname}" data-bankaccount="${element.bankaccount}" value="${element.id}">${element.bankname} - ${element.bankaccount}</option>`
+            })
+            select3.innerHTML = output
+
+            // actializar valores de campos ocultos
+            select3.addEventListener('change', (e) => {
+                e.preventDefault()
+                const miselect = select3.options[select3.selectedIndex]
+                if (miselect) {
+                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="scode"]`).value = select3.options[select3.selectedIndex].dataset.bankaccount
+                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="sname"]`).value = select3.options[select3.selectedIndex].dataset.bankname
+                }
+            })
+        } else {
+            select3.innerHTML = `<option value="-1000" aria-label="open modal" data-open="partyBankInfoModal">${res.error}</option>`
+        }
+        modal.initModal()
+    })
+
+    // Add new record
+    formPartyBankInfo.addEventListener('submit', async e => {
+        e.preventDefault()
+        // Validar que todos los campos esten llenos
+        const formData = new FormData(formPartyBankInfo)
+        formData.append('addAccount', 1)
+        const data = await fetch(URI, {
+            method: 'POST',
+            body: formData
+        })
+        const res = await data.text()
+        showAlert.innerHTML = res
+        document.getElementById('modal4').click()
+    })
 
     // Search all data
     const fetchAllData = async () => {
@@ -70,96 +135,9 @@ document.addEventListener('DOMContentLoaded', function () {
             body: formData
         })
         const res = await data.text()
-
         showAlert.innerHTML = res
         fetchAllData()
         document.getElementById('modal2').click()
-    })
-
-    async function filterCompanyInput(src, dest, selected) {
-        const srcValue = src.value
-        // limpiando errores
-        let errors = document.querySelector('.error-message')
-        if (errors) {
-            errors.remove()
-        }
-
-        if (srcValue.length > 3) {
-            const data = await fetch(`${URI}?fetchCompany=${srcValue}`, {
-                method: 'GET'
-            })
-            const res = await data.json()
-            let output = ""
-            if (selected) {
-                let customObj
-
-                // selecciona por defecto la compañia
-                if (!res.error) {
-                    customObj = res.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
-
-                    customObj.forEach(element => {
-                        if (element.selected) {
-                            output += `<option selected value="${element.id}">${element.name} </option>`
-                        } else {
-                            output += `<option value="${element.id}">${element.name} </option>`
-                        }
-                    })
-
-                    dest.classList.remove('hide')
-                    dest.innerHTML = output
-                } else {
-                    const nodeError = document.createElement("p");
-                    const textnode = document.createTextNode(`* ${res.error}`);
-                    nodeError.classList.add('error-message')
-                    nodeError.appendChild(textnode)
-
-                    dest.closest('.filter-company-container').appendChild(nodeError)
-                    dest.classList.add('hide')
-
-                }
-            } else {
-                if (!res.error) {
-                    res.forEach(element => {
-                        if (element.selected) {
-                            output += `<option selected value="${element.id}">${element.name} </option>`
-                        } else {
-                            output += `<option value="${element.id}">${element.name} </option>`
-                        }
-                    })
-                    dest.classList.remove('hide')
-                    dest.innerHTML = output
-                } else {
-                    const nodeError = document.createElement("p");
-                    const textnode = document.createTextNode(`* ${res.error}`);
-                    nodeError.classList.add('error-message')
-                    nodeError.appendChild(textnode)
-
-                    dest.closest('.filter-company-container').appendChild(nodeError)
-                    dest.classList.add('hide')
-                }
-            }
-        } else {
-            dest.classList.add('hide')
-            dest.innerHTML = ""
-        }
-
-        // si da click en el select ponloo en el input
-        dest.addEventListener('change', e => {
-            const selectedOption = dest.options[dest.selectedIndex]
-            src.value = selectedOption.textContent
-        })
-    }
-
-    idpartylocation1.addEventListener('input', async e => {
-        e.preventDefault()
-        // Buscar compañia
-        filterCompanyInput(idpartylocation1, infocompany1)
-    })
-
-    idpartylocation2.addEventListener('input', async e => {
-        e.preventDefault()
-        // Buscar compañia
-        filterCompanyInput(idpartylocation2, infocompany2, true)
     })
 
     // edit data fetch
@@ -182,7 +160,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('idpartylocation2').value = res[0].companyname
 
         // para que aparezca seleccionado por defecto el buscador
-        filterCompanyInput(idpartylocation2, infocompany2, true)
+        filter2.filterby(undefined, undefined, true)
 
         const miarr = document.getElementById('editidentitysubclass').options
         for (const key in miarr) {

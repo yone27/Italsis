@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const entityclassSelect = document.getElementById('entityclassSelect')
     const entityclassInput1 = document.getElementById('entityclassInput1')
     const entityclassSelect1 = document.getElementById('entityclassSelect1')
-    const pagination = new Pagination('#tableEntitySubClass')
+    const pagination = new Pagination('#tableEntitySubClass', true)
     const modal = new Modal()
     const showAlert = document.getElementById('showAlert')
     const URI = 'actionEntitySubClass.php'

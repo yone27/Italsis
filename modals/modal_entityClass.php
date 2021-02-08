@@ -9,8 +9,8 @@
                 </header>
                 <aside class="modal-body">
                     <?php
-                    presentationLayerY::buildInput("code", "code", "", '', "50", "", "", "required");
-                    presentationLayerY::buildInput("name", "name", "", '', "50", "", "", "required");
+                    presentationLayerY::buildInput("code", "code", "", "", "50", "", "", "required");
+                    presentationLayerY::buildInput("name", "name", "", "", "50", "", "", "required");
                     ?>
                      <label>
                         <span>observation :</span>

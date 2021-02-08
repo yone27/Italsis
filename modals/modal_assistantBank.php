@@ -7,11 +7,8 @@
                     <button class="close-modal" type="button" id="modal2" aria-label="close modal" data-close>✕</button>
                 </header>
                 <aside class="modal-body">
-                    <?php
-                    presentationLayerY::buildInput("code", "scode", "scode", $code, "50","", "","required");
-                    presentationLayerY::buildInput("name", "sname", "sname", $name, "50","", "","required");
-                    ?>
-                    
+                    <input type="hidden" name="scode">
+                    <input type="hidden" name="sname">
                     <div class="filter-company-container">
                         <label>
                             <span>Nombre compañia :</span>
@@ -21,9 +18,19 @@
                         </select>
                     </div>
 
+                    <!-- filter account by idpartylocation (idpartybankinfo) -->
+                    <div class="filter-company-container" id="accounts-container">
+                        <label>
+                            <span>Cuentas</span>
+                        </label>
+                        <select name="idpartybankinfo" required class="menu-company" id="select3" multiple="multiple">
+                        </select>
+                    </div>
+                    <!-- /filter account by idpartylocation (idpartybankinfo) -->
+
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass,"", "required");
+                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
                     ?>
                 </aside>
                 <footer class="modal-footer">

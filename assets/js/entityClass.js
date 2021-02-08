@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const tbody = document.querySelector('#tableEntityClass tbody')
     const updateForm = document.getElementById('edit-entityClass-form')
     const updateUserBtn = document.getElementById('btn-edit-data')
-    const pagination = new Pagination('#tableEntityClass')
+    const pagination = new Pagination('#tableEntityClass', true)
     const modal = new Modal()
     const URI = 'actionEntityClass.php'
 
@@ -85,10 +85,10 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector(`#${updateForm.getAttribute('id')} [name="code"]`).value = res[0].code
         document.querySelector(`#${updateForm.getAttribute('id')} [name="name"]`).value = res[0].name
         document.querySelector(`#${updateForm.getAttribute('id')} [name="observation"]`).value = res[0].observation
-        
-        if(res[0].generator === 'Y') {
+
+        if (res[0].generator === 'Y') {
             document.querySelector(`#${updateForm.getAttribute('id')} [name="generator"]`).setAttribute('checked', 'true')
-        }else{
+        } else {
             document.querySelector(`#${updateForm.getAttribute('id')} [name="generator"]`).removeAttribute('checked')
         }
 

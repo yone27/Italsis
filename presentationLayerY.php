@@ -16,14 +16,18 @@ class presentationLayerY extends presentationLayer
     {
         echo '<LABEL>';
         echo '<SPAN>' . $title . '</SPAN>';
+
+        $ID = $id ? 'id="' . $id . '"' : '';
+
         if ($onblur != "")
             $onblur = ' onBlur="' . $onblur . '" ';
-        echo '<INPUT ' . $readonly . ' name = "' . $name . '" type="text" id="' . $id . '" value = "' . $val . '" required = "' . $required . '" ';
+        echo '<INPUT ' . $readonly . ' name = "' . $name . '" type="text"  ' . $ID . ' value = "' . $val . '" required = "' . $required . '" ';
+
         echo $onblur;
         echo 'maxlength="' . $maxlength . '" placeholder="' . $title . '"></INPUT>';
         echo '</LABEL>';
     }
-    
+
     static function buildSelectWithComEvent(
         $title,
         $name,
