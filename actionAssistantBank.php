@@ -7,7 +7,6 @@ $dbl = new baseBL();
 $util = new Util;
 $errors = [];
 
-
 // handle fetch all
 if (isset($_GET['fetchAll'])) {
     $q = "
@@ -195,11 +194,35 @@ if (isset($_GET['fetchCompany'])) {
 if (isset($_GET['delete'])) {
     $id = $util->testInput($_GET['id']);
 
-    $com = "
+    $com2 = "
+    SELECT 
+        -- assistantbank
+        LA.id,
+        LA.code,
+        LA.idpartybankinfo
+    FROM 
+        libertyweb.assistantbank  LA
+    WHERE
+        LA.id = '$id'";
+
+    $data = $dbl->executeReader($com2);
+
+    $test = $data[0];
+    $idpartybankinfo = $test['idpartybankinfo'];
+
+    $com3 = "
+    UPDATE party.partybankinfo
+    SET active='N'
+    WHERE id = '$idpartybankinfo'";
+
+    $dbl->executeReader($com3);
+
+    $com4 = "
     UPDATE libertyweb.assistantbank
     SET deleted='Y'
     WHERE id = '$id'";
-    $result = $dbl->executeCommand($com);
+
+    $result = $dbl->executeCommand($com4);
 
     if ($result) {
         echo $util->showMessage('info', 'Registro eliminado satisfactoriamente!');
@@ -275,7 +298,7 @@ if (isset($_GET['accountByIdparty'])) {
     SELECT id,bankname, bankaccount
     FROM party.partybankinfo
     WHERE idparty = '$idpartylocation'
-    AND active = 'Y';
+    AND deleted = 'N';
          ";
     $data = $dbl->executeReader($com);
     if ($data) {

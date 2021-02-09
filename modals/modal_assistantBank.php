@@ -27,10 +27,9 @@
                         </select>
                     </div>
                     <!-- /filter account by idpartylocation (idpartybankinfo) -->
-
                     <?php
                     $com = "select * from base.entitysubclass where identityclass in (select id from base.entityclass where code in ('Departamentos'))";
-                    presentationLayer::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
+                    presentationLayerY::buildSelectWithComEvent('Dept', 'sidentitysubclass', 'sidentitysubclass', $sbl, $com, "id", "name", $identitysubclass, "", "required");
                     ?>
                 </aside>
                 <footer class="modal-footer">

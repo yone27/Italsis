@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const test = document.getElementById('infocompany1')
 
-    const input3 = document.getElementById('input3')
     const select3 = document.getElementById('select3')
+
     const infocompany1 = document.getElementById('infocompany1')
 
     document.getElementById('idpartylocation1').value = 'PEDRO JOSE NUÑEZ  ZABALA '
@@ -36,7 +36,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
-    // PEDRO JOSE NUÑEZ ZABALA
     infocompany1.addEventListener('change', async (e) => {
         e.preventDefault()
         const selectedOption = infocompany1.options[infocompany1.selectedIndex]
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function () {
         modal.initModal()
     })
 
-    // Add new record
+    // Add new record formPartyBankInfo
     formPartyBankInfo.addEventListener('submit', async e => {
         e.preventDefault()
         // Validar que todos los campos esten llenos
@@ -136,6 +135,14 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         const res = await data.text()
         showAlert.innerHTML = res
+
+        // Limpiando campos de formularios
+        // formAssistantbankPL.reset()
+        filter1.reset()
+        while (select3.firstChild) {
+            select3.removeChild(select3.firstChild);
+        };
+
         fetchAllData()
         document.getElementById('modal2').click()
     })

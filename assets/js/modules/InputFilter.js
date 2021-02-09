@@ -17,7 +17,13 @@ export default class InputFilter {
             this.filterby(this.input, this.select, this.selected)
         })
     }
-    
+
+    reset = () => {
+        while (this.select.firstChild) {
+            this.select.removeChild(this.select.firstChild);
+        };
+    }
+
 
     async filterby(src = this.input, dest = this.select, selected = false) {
         const srcValue = src.value
@@ -26,7 +32,7 @@ export default class InputFilter {
         if (errors) {
             errors.remove()
         }
-        
+
         if (srcValue.length > 3) {
             const data = await fetch(`${this.URI}=${srcValue}`, {
                 method: 'GET'
