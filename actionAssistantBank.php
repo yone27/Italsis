@@ -131,10 +131,11 @@ if (isset($_POST['add'])) {
         VALUES ('$code', '$name','$idpartybankinfo', '$dateregister', 'Y', 'N', '$idpartylocation', '$identitysubclass');
         ";
     $result = $dbl->executeCommand($com);
+
     // Actualizar registro para que no salga la cuenta agregada nuevamenet
     $comBankInfo = "
     UPDATE party.partybankinfo
-    SET active='N'
+    SET deleted='Y'
     WHERE id='$idpartybankinfo';
     ";
     $bankInfo = $dbl->executeCommand($comBankInfo);
@@ -194,7 +195,7 @@ if (isset($_GET['fetchCompany'])) {
 if (isset($_GET['delete'])) {
     $id = $util->testInput($_GET['id']);
 
-    $com2 = "
+    $qGetAsistantBank = "
     SELECT 
         -- assistantbank
         LA.id,
@@ -205,26 +206,25 @@ if (isset($_GET['delete'])) {
     WHERE
         LA.id = '$id'";
 
-    $data = $dbl->executeReader($com2);
+    $resAssistantBank = $dbl->executeReader($qGetAsistantBank);
 
-    $test = $data[0];
+    $test = $resAssistantBank[0];
     $idpartybankinfo = $test['idpartybankinfo'];
 
-    $com3 = "
+    // activamos nuevamente la cuenta en party
+    $qUpdateBankInfo = "
     UPDATE party.partybankinfo
-    SET active='N'
+    SET deleted='N'
     WHERE id = '$idpartybankinfo'";
 
-    $dbl->executeReader($com3);
+    $dbl->executeReader($qUpdateBankInfo);
 
-    $com4 = "
-    UPDATE libertyweb.assistantbank
-    SET deleted='Y'
+    // eliminar registro de assistantbank
+    $qDeleteAsistantBank = "
+    DELETE FROM libertyweb.assistantbank
     WHERE id = '$id'";
 
-    $result = $dbl->executeCommand($com4);
-
-    if ($result) {
+    if ($dbl->executeCommand($qDeleteAsistantBank)) {
         echo $util->showMessage('info', 'Registro eliminado satisfactoriamente!');
     } else {
         echo $util->showMessage('danger', 'Hubo un error!');
@@ -241,6 +241,7 @@ if (isset($_GET['edit'])) {
         LA.id,
         LA.code,
         LA.name, 
+        LA.idpartybankinfo, 
         LA.dateregister,
         -- Nombre de la compañia
         PP.name AS companyname,
@@ -288,18 +289,23 @@ if (isset($_POST['update'])) {
     }
 }
 
-
 // Handle fetch accounts by company
 if (isset($_GET['accountByIdparty'])) {
     $idpartylocation = $util->testInput($_GET['accountByIdparty']);
+    $cond = $util->testInput($_GET['cond']);
+
+    if($cond) {
+        $test = "AND deleted = 'N';";
+    }
+    $test = 
 
     // TODAS LAS CUENTAS QUE TIENE EN PARTYBANKINFO
     $com = "
     SELECT id,bankname, bankaccount
     FROM party.partybankinfo
     WHERE idparty = '$idpartylocation'
-    AND deleted = 'N';
-         ";
+    '$test'";
+    
     $data = $dbl->executeReader($com);
     if ($data) {
         echo json_encode($data);

@@ -1,9 +1,3 @@
-/*
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
-*/
-
 /* 
     Created on : 23/12/2020, 12:39:14 PM
     Author     : ygonzaleza
@@ -47,8 +41,6 @@ button {
     border-radius: 5px;
 }
 
-/*CUSTOM VARIABLES HERE*/
-
 .modal {
     overflow: hidden;
     position: fixed;
@@ -69,8 +61,6 @@ button {
 .modal-body {
     padding: 20px 30px;
 }
-
-/*CUSTOM VARIABLES HERE*/
 
 .modal-content {
     border-radius: 3px;

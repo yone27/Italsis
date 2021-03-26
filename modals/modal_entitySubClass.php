@@ -12,12 +12,12 @@
                     presentationLayerY::buildInput("code", "code", "", "", "50","","","required");
                     presentationLayerY::buildInput("name", "name", "", "", "50","","","required");
                     ?>
-                    <div class="filter-company-container">
-                        <label>
-                            <span>Nombre entityClass :</span>
-                            <input autocomplete="off" name="entityclassInput" class="filter-company" type="text" id="entityclassInput" required placeholder="Nombre entityClass">
-                        </label>
-                        <select name="entityclassSelect" required class="menu-company hide" id="entityclassSelect" multiple="multiple">
+                    <div class="filter">
+                        <div class="filter__containerInput">
+                            <label>Nombre entityClass :</label>
+                            <input  class="filter__input" name="entityclassInput" id="entityclassInput" type="text" required placeholder="Nombre entityClass" autocomplete="off">
+                        </div>
+                        <select class="filter__select hide" name="entityclassSelect" id="entityclassSelect" required  multiple="multiple">
                         </select>
                     </div>
                     <label>

@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const res = await data.text()
         showAlert.innerHTML = res
         fetchAllData()
+        
         // Cerrando el modal
         document.querySelector(`#${formEntityClass.getAttribute('id')} [class="close-modal"]`).click()
     })

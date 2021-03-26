@@ -1,0 +1,18 @@
+{
+	"folders": [
+		{
+			"path": "..\\..\\.."
+		}
+	],
+	"settings": {},
+	"launch": {
+		"configurations": [
+			{
+				"type": "pwa-chrome",
+				"name": "http://localhost/italsis/modules/masters/masterTables/partyentityrelationshipPL.php",
+				"request": "launch",
+				"url": "http://localhost/italsis/modules/masters/masterTables/partyentityrelationshipPL.php"
+			}
+		]
+	}
+}

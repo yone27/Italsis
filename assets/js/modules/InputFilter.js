@@ -16,6 +16,13 @@ export default class InputFilter {
             // search data
             this.filterby(this.input, this.select, this.selected)
         })
+        const papi = this.input.closest('.filter__containerInput')
+        const newNode = document.createElement('div')
+        newNode.classList.add('iconAppend')
+        newNode.innerHTML = '<i class="fa fa-flip-horizontal filter__iconSelect rotate360 hidden">X</i>'
+        
+        papi.appendChild(newNode)
+        this.loader = newNode
     }
 
     reset = () => {
@@ -32,8 +39,14 @@ export default class InputFilter {
         if (errors) {
             errors.remove()
         }
+        
+        // Seleccionando loader 
+        const loader = this.loader.children[0]
 
         if (srcValue.length > 3) {
+            // Colocando loader
+            loader.classList.remove('hidden')
+
             const data = await fetch(`${this.URI}=${srcValue}`, {
                 method: 'GET'
             })
@@ -43,6 +56,7 @@ export default class InputFilter {
                 let customObj
                 // selecciona por defecto el registro
                 if (!res.error) {
+
                     customObj = res.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
 
                     customObj.forEach(element => {
@@ -61,9 +75,8 @@ export default class InputFilter {
                     nodeError.classList.add('error-message')
                     nodeError.appendChild(textnode)
 
-                    dest.closest('.filter-company-container').appendChild(nodeError)
+                    dest.closest('.filter').appendChild(nodeError)
                     dest.classList.add('hide')
-
                 }
             } else {
                 if (!res.error) {
@@ -88,10 +101,12 @@ export default class InputFilter {
                     nodeError.classList.add('error-message')
                     nodeError.appendChild(textnode)
 
-                    dest.closest('.filter-company-container').appendChild(nodeError)
+                    dest.closest('.filter').appendChild(nodeError)
                     dest.classList.add('hide')
                 }
             }
+            // Quitando loader
+            loader.classList.add('hidden')
         } else {
             dest.classList.add('hide')
             dest.innerHTML = ""

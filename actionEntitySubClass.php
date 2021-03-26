@@ -107,7 +107,7 @@ if (isset($_POST['update'])) {
     $code =  $util->testInput($_POST['code']);
     $name =  $util->testInput($_POST['name']);
     $observation =  $util->testInput($_POST['observation']);
-    $identityclass =  $util->testInput($_POST['entityclassSelect1']);
+    $identityclass =  $util->testInput($_POST['entityclassSelect']);
 
     $com = "
     UPDATE base.entitysubclass

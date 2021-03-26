@@ -17,16 +17,6 @@
     border: 1px solid #ddd;
 }
 
-.filter-company-container {
-    margin-bottom: 10px;
-}
-.filter-company-container label:first-child, .filter-company-container input {
-    margin-bottom: 0 !important;
-}
-.filter-company-container select  {
-    margin-top: 0 !important;
-}
-
 .table-pagination-header {
     display: flex;
     align-items: center;
@@ -34,8 +24,4 @@
 }
 .table-pagination-header label {
     color: #5E5E5E;
-}
-
-.input-filter {
-    margin: 0 !important;
 }

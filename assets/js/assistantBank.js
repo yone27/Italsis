@@ -13,29 +13,21 @@ document.addEventListener('DOMContentLoaded', function () {
     const showAlert = document.getElementById('showAlert')
 
     const URI = 'actionAssistantBank.php'
+
     const pagination = new Pagination('#tableAssistantBank')
     const filter1 = new InputFilter('idpartylocation1', 'infocompany1')
     const filter2 = new InputFilter('idpartylocation2', 'infocompany2', undefined, true)
 
-    const test = document.getElementById('infocompany1')
-
     const select3 = document.getElementById('select3')
-
+    const select4 = document.getElementById('select4')
     const infocompany1 = document.getElementById('infocompany1')
-
-    document.getElementById('idpartylocation1').value = 'PEDRO JOSE NUÑEZ  ZABALA '
-    // const filter3 = new InputFilter('idpartylocation1', 'select3', 'actionAssistantBank.php?test')
+    const infocompany2 = document.getElementById('infocompany2')
+    
     const modal = new Modal()
-
-    // asignar idparty para cuando quiera agregar una nueva cuenta
-    test.addEventListener('change', async (e) => {
-        e.preventDefault()
-        const selectedOption = test.options[test.selectedIndex]
-        if (selectedOption.value) {
-            document.querySelector(`#${formPartyBankInfo.getAttribute('id')} [name="idparty"]`).value = selectedOption.value
-        }
-    })
-
+    
+    // TESTING
+    document.getElementById('idpartylocation1').value = 'PEDRO JOSE NUÑEZ  ZABALA '
+    
     infocompany1.addEventListener('change', async (e) => {
         e.preventDefault()
         const selectedOption = infocompany1.options[infocompany1.selectedIndex]
@@ -46,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!res.error) {
             let output = ""
+
             res.forEach(element => {
                 output += `<option data-bankName="${element.bankname}" data-bankaccount="${element.bankaccount}" value="${element.id}">${element.bankname} - ${element.bankaccount}</option>`
             })
@@ -54,10 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
             // actializar valores de campos ocultos
             select3.addEventListener('change', (e) => {
                 e.preventDefault()
-                const miselect = select3.options[select3.selectedIndex]
-                if (miselect) {
-                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="scode"]`).value = select3.options[select3.selectedIndex].dataset.bankaccount
-                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="sname"]`).value = select3.options[select3.selectedIndex].dataset.bankname
+                if (infocompany1.options[infocompany1.selectedIndex]) {
+                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="scode"]`).value = infocompany1.options[infocompany1.selectedIndex].dataset.bankaccount
+                    document.querySelector(`#${formAssistantbankPL.getAttribute('id')} [name="sname"]`).value = infocompany1.options[infocompany1.selectedIndex].dataset.bankname
+                    
+                    // asignar idparty para cuando quiera agregar una nueva cuenta
+                    document.querySelector(`#${formPartyBankInfo.getAttribute('id')} [name="idparty"]`).value = infocompany1.options[infocompany1.selectedIndex].value
                 }
             })
         } else {
@@ -161,14 +156,53 @@ document.addEventListener('DOMContentLoaded', function () {
             method: 'GET'
         })
         const res = await data.json()
-        document.getElementById('idEdit').value = res[0].id
-        document.getElementById('editCode').value = res[0].code
-        document.getElementById('editName').value = res[0].name
-        document.getElementById('idpartylocation2').value = res[0].companyname
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="id"]`).value = res[0].id
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="code"]`).value = res[0].code
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="name"]`).value = res[0].name
+        document.querySelector(`#${updateForm.getAttribute('id')} [name="idpartylocation"]`).value = res[0].companyname
 
         // para que aparezca seleccionado por defecto el buscador
-        filter2.filterby(undefined, undefined, true)
+        await filter2.filterby(undefined, undefined, true)
 
+        const selectedOption = infocompany2.options[infocompany2.selectedIndex]
+        
+        const data1 = await fetch(`${URI}?accountByIdparty=${selectedOption.value}&cond=1`, {
+            method: 'GET'
+        })
+        const res1 = await data1.json()
+console.log(res1);
+        // if (!res1.error) {
+
+            
+        //     customObj = res1.map(element => (element.name.toUpperCase() == srcValue.toUpperCase() ? { name: element.name, id: element.id, selected: true } : element))
+
+        //     customObj.forEach(element => {
+        //         if (element.selected) {
+        //             output += `<option selected value="${element.id}">${element.name} </option>`
+        //         } else {
+        //             output += `<option value="${element.id}">${element.name} </option>`
+        //         }
+        //     })
+
+
+
+        //     let output = ""
+
+        //     res1.forEach(element => {
+        //         output += `<option data-bankName="${element.bankname}" data-bankaccount="${element.bankaccount}" value="${element.id}">${element.bankname} - ${element.bankaccount}</option>`
+        //     })
+        //     select4.innerHTML = output
+
+        //     // actializar valores de campos ocultos
+        //     select4.addEventListener('change', (e) => {
+        //         e.preventDefault()
+        //         if (infocompany1.options[infocompany1.selectedIndex]) {
+        //             document.querySelector(`#${updateForm.getAttribute('id')} [name="code"]`).value = infocompany1.options[infocompany1.selectedIndex].dataset.bankaccount
+        //             document.querySelector(`#${updateForm.getAttribute('id')} [name="name"]`).value = infocompany1.options[infocompany1.selectedIndex].dataset.bankname
+        //         }
+        //     })
+        // } 
+        
         const miarr = document.getElementById('editidentitysubclass').options
         for (const key in miarr) {
             if (Object.hasOwnProperty.call(miarr, key)) {

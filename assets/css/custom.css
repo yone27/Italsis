@@ -2,6 +2,11 @@
     padding: 30px 20px;
 }
 
+label {
+    color: #5E5E5E !important;
+    font-size: 1em;
+}
+
 .italsis h1.title-a {
     display: flex;
     justify-content: space-between;
@@ -24,18 +29,65 @@
     width: 100%;
 }
 
-.menu-company {
-    border-top: none !important;
-    margin-top: 0px;
-    background: #eee;
-    height: 100px !important;
-    margin-top: -5px;
+.filter {
     margin-bottom: 10px;
 }
 
-.menu-company.hide {
+.filter .filter__input,
+.filter .filter__select {
+    border-radius: 0 !important;
+}
+
+.filter label:first-child, .filter input {
+    margin-bottom: 0 !important;
+}
+
+.filter__select {
+    margin-top: 0px !important;
+    background: #eee;
+    height: 100px !important;
+    margin-bottom: 10px;
+}
+
+.filter__select.hide {
     height: 0px !important;
     padding: 0;
+}
+
+.filter__input {
+    margin: 0 !important;
+    width: 95% !important;
+    border-right: none !important;
+}
+.filter__containerInput {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.iconAppend {
+    color: #ced4da;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    border: 1px solid #ced4da;
+    border-left: none;
+}
+
+/* animacion 360 */
+.rotate360 {
+    animation-name: rotate360;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes rotate360 {
+    from {
+        transform: rotate(0);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 input, select {
@@ -52,8 +104,6 @@ input, select {
     border-radius: .25rem !important;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out !important;
     appearance: auto;
-    -webkit-appearance: auto;
-    -moz-appearance: auto;
 }
 
 /* Custom layout */
